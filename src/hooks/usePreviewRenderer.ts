@@ -1,11 +1,24 @@
 import { useCallback, useEffect, useRef } from "react";
 import useTileStore from "../stores/useTileStore";
+import TileMap from "../engine/TileMap";
 
 function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   // const input = useTileStore(state => state.preview.input);
   const map = useTileStore(state => state.preview.map);
   const setupPreview = useTileStore(state => state.setupPreview);
   const destroyPreview = useTileStore(state => state.destroyPreview);
+
+  const drawTileNumber = (ctx: CanvasRenderingContext2D, map: TileMap, col, row) => {
+    const tileNum = map.getTileIndex(col, row) + 1;
+    const x = col * map.tileSize;
+    const y = row * map.tileSize;
+
+    ctx.fillStyle = "black";
+    ctx.font = "20px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(`${tileNum}`, x + map.tileSize / 4, y +  map.tileSize / 4);
+  }
 
   const drawLayer = useCallback((layer: number) => {
     if (!ctx || !map) return;
@@ -39,6 +52,9 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
         //   map.tileSize,
         //   map.tileSize
         // );
+
+
+        drawTileNumber(ctx, map, col, row);
 
         if (showGrid) {
           ctx.strokeRect(

@@ -25,7 +25,7 @@ export default class TileMap {
     this.layers = layers;
   }
 
-  getTileNumber = (col: number, row: number): number => row * this.cols + col
+  getTileIndex = (col: number, row: number): number => row * this.cols + col
 
   getTile = (layer: number, col: number, row: number): number => {
     return this.layers[layer][row * this.cols + col]
