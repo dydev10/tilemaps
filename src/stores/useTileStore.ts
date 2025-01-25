@@ -34,14 +34,22 @@ const sampleLayers = [
   ],
 ];
 
+type PreviewTiles = {
+  input: Input | null,
+  map: TileMap | null,
+}
+
 type TileStore = {
   layers: number[][],
   input: Input | null,
   map: TileMap | null,
   camera: Camera2D | null,
-
   setupLayers:(gameWidth: number, gameHeight: number) => void,
   destroyTiles:() => void,
+
+  preview: PreviewTiles,
+  setupPreview: (previewWidth: number, previewHeight: number) => void;
+  destroyPreview: () => void;
 }
 
 const useTileStore = create<TileStore>((set, get) =>({
@@ -53,11 +61,30 @@ const useTileStore = create<TileStore>((set, get) =>({
   map: null,
   camera: null,
   
+  preview: {
+    input: null,
+    map: null,
+  },
   
   /**
    * reducers
   */
-  // init
+  setupPreview: (previewWidth: number, previewHeight: number) => {
+    const layers = structuredClone(sampleLayers);
+    const input = new Input();
+    const map = new TileMap(layers);
+    set({
+      preview: {
+        input,
+        map,
+      }
+    })
+  },
+
+  destroyPreview: () => {
+    get().input?.destroy();
+  },
+
   setupLayers: (gameWidth: number, gameHeight: number) => {
     const layers = structuredClone(sampleLayers);
     const input = new Input();
