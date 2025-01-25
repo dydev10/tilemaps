@@ -34,9 +34,17 @@ const sampleLayers = [
   ],
 ];
 
+export enum PreviewProps {
+  SIZE = 'size',
+  COLS = 'cols',
+}
+
 type PreviewTiles = {
+  active: PreviewProps,
   input: Input | null,
   map: TileMap | null,
+  size: number,
+  cols: number,
 }
 
 type TileStore = {
@@ -49,6 +57,9 @@ type TileStore = {
 
   preview: PreviewTiles,
   setupPreview: (previewWidth: number, previewHeight: number) => void;
+  updatePreview: (imageConfig: { tileSize?: number, tileCols?: number }) => void;
+  setPreviewSize: (size: number) => void;
+  setPreviewCols: (cols: number) => void;
   destroyPreview: () => void;
 }
 
@@ -64,6 +75,9 @@ const useTileStore = create<TileStore>((set, get) =>({
   preview: {
     input: null,
     map: null,
+    active: PreviewProps.COLS,
+    size: 32,
+    cols: 4,
   },
   
   /**
@@ -72,15 +86,58 @@ const useTileStore = create<TileStore>((set, get) =>({
   setupPreview: (previewWidth: number, previewHeight: number) => {
     const layers = structuredClone(sampleLayers);
     const input = new Input();
-    const map = new TileMap(layers);
+    const map = new TileMap(layers, previewWidth, previewHeight);
     set({
       preview: {
         input,
         map,
+        active: PreviewProps.COLS,
+        size: 32,
+        cols: 4,
       }
     })
   },
+  updatePreview: (imageConfig: { tileSize?: number, tileCols?: number }) => {
+    const { tileSize, tileCols } = imageConfig;
+    const map = get().preview.map;
+    if (!map) return;
 
+    if (tileSize) {
+      map.setPreviewTileSize(tileSize);
+      set({
+        preview: {
+          ...get().preview,
+          active: PreviewProps.SIZE,
+        }
+      })
+    }
+
+    if (tileCols) {
+      map.setPreviewTileCols(tileCols);
+      set({
+        preview: {
+          ...get().preview,
+          active: PreviewProps.SIZE,
+        }
+      })
+    }
+  },
+  setPreviewSize: (size: number) => {
+    set({
+      preview: {
+        ...get().preview,
+        size,
+      }
+    })
+  },
+  setPreviewCols: (cols: number) => {
+    set({
+      preview: {
+        ...get().preview,
+        cols,
+      }
+    })
+  },
   destroyPreview: () => {
     get().input?.destroy();
   },

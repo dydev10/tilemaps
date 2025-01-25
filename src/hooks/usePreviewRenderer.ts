@@ -3,12 +3,14 @@ import useTileStore from "../stores/useTileStore";
 import TileMap from "../engine/TileMap";
 
 function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
+  const frameRef = useRef<number | null>(null);
+  
   // const input = useTileStore(state => state.preview.input);
   const map = useTileStore(state => state.preview.map);
   const setupPreview = useTileStore(state => state.setupPreview);
   const destroyPreview = useTileStore(state => state.destroyPreview);
 
-  const drawTileNumber = (ctx: CanvasRenderingContext2D, map: TileMap, col, row) => {
+  const drawTileNumber = (ctx: CanvasRenderingContext2D, map: TileMap, col: number, row: number) => {
     const tileNum = map.getTileIndex(col, row) + 1;
     const x = col * map.tileSize;
     const y = row * map.tileSize;
@@ -24,6 +26,9 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
     if (!ctx || !map) return;
 
 
+    ctx.fillStyle = "#ffeeee";
+    ctx.fillRect(0, 0, previewWidth, previewHeight);  
+
     ctx.drawImage(
       map.image,
       0,  // sx,
@@ -33,26 +38,13 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
       0,
       0,
       previewWidth,
-      previewHeight
+      previewHeight,
     );
 
     // grid
-    for (let row = 0; row <= map.rows; row++) {
-      for (let col = 0; col <= map.cols; col++) {
+    for (let row = 0; row < map.rows; row++) {
+      for (let col = 0; col < map.cols; col++) {
         const tile = map.getTile(layer, col, row);
-
-        // ctx.drawImage(
-        //   map.image,
-        //   ((tile - 1) * map.imageTile) % map.image.width,  // sx,
-        //   Math.floor((tile - 1) / map.imageCols) * map.imageTile,  // sy,
-        //   map.imageTile,  // sw,
-        //   map.imageTile,  // sh,
-        //   col * map.tileSize,
-        //   row * map.tileSize,
-        //   map.tileSize,
-        //   map.tileSize
-        // );
-
 
         drawTileNumber(ctx, map, col, row);
 
@@ -74,8 +66,14 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
     ctx.imageSmoothingEnabled = false;
 
     drawLayer(0);
-    drawLayer(1);
+    // drawLayer(1);
   }, [ctx, drawLayer]);
+
+  const frame = useCallback(() => {
+    draw();
+    
+    frameRef.current = requestAnimationFrame(frame);
+  }, [draw]);
 
   useEffect(() => {
     setupPreview(previewWidth, previewHeight)
@@ -87,8 +85,14 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
 
   // start frame loop
   useEffect(() => {
-    draw();
-  }, [draw]);
+    frameRef.current = requestAnimationFrame(frame);
+    
+    return () => {
+      if (frameRef.current) {
+        cancelAnimationFrame(frameRef.current);
+      }
+    }
+  }, [frame]);
 
   return draw;
 }
