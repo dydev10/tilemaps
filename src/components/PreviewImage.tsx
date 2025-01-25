@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useRef, useState } from "react";
 // import layerImage from '../assets/tilemap1layer.png'
 import worldImage from '../assets/worldtileset.png'
+import fullMap from '../assets/fullMap.png'
 
 import usePreviewRenderer from "../hooks/usePreviewRenderer";
 import useTileStore from "../stores/useTileStore";
@@ -67,8 +68,8 @@ const PreviewImage: React.FC = () => {
         style={{
           border: '1px solid black',
           background: '#ffaaaa',
-          width: '384px',
-          height: '384px',
+          // width: '384px',
+          // height: '384px',
           imageRendering: 'pixelated',
         }}
       />
@@ -83,9 +84,19 @@ const PreviewImage: React.FC = () => {
         }}
       /> */}
       
-      <img
+      {/* <img
         alt="Hidden tilemap source img"
         src={worldImage}
+        id="tilemap-source"
+        style={{
+          // visibility: 'hidden',
+          display: 'none',
+        }}
+      /> */}
+
+      <img
+        alt="Hidden tilemap source img"
+        src={fullMap}
         id="tilemap-source"
         style={{
           // visibility: 'hidden',
