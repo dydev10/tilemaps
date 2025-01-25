@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import layerImage from '../assets/tilemap1layer.png'
 
 import useTileMapRenderer from "../hooks/useTileMapRenderer";
 
@@ -9,12 +10,11 @@ const GAME_HEIGHT = 512;
 
 
 
-const TileCamera: React.FC = () => {
+const PreviewImage: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
 
   // ui 
-  const [showGrid, setShowGrid] = useState<boolean>(true);
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
@@ -25,23 +25,20 @@ const TileCamera: React.FC = () => {
     }
   }, []);
 
-  useTileMapRenderer(ctx, GAME_WIDTH, GAME_HEIGHT, showGrid);
+  useTileMapRenderer(ctx, GAME_WIDTH, GAME_HEIGHT, true);
 
   return (
-    <div>
-      <canvas
-        ref={canvasRef}
+    <div className="preview-image">
+      <img
+        alt="Hidden tilemap source img"
+        src={layerImage}
+        id="tilemap-source"
         style={{
-          border: '1px solid black',
-          background: '#ffaaaa',
-          width: '384px',
-          height: '384px',
-          imageRendering: 'pixelated',
+          // visibility: 'hidden',
         }}
       />
-      <button onClick={() => { setShowGrid(!showGrid) }}>Grid</button>
     </div>
   );
 };
 
-export default TileCamera;
+export default PreviewImage;

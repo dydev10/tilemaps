@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import Map from "../engine/Map";
-import Camera2D from "../engine/Camera2D";
-import Input from "../engine/Input";
+import { useCallback, useEffect, useRef } from "react";
+import useTileStore from "../stores/useTileStore";
 
 function useTileMapRenderer(ctx: CanvasRenderingContext2D | null, gameWidth: number, gameHeight: number, showGrid: boolean) {
-  const [map, setMap] = useState<Map|null>(null);
-  const [camera, setCamera] = useState<Camera2D|null>(null);
-  const [input, setInput] = useState<Input|null>(null);
+  const input = useTileStore(state => state.input);
+  const map = useTileStore(state => state.map);
+  const camera = useTileStore(state => state.camera);
+  const setupLayers = useTileStore(state => state.setupLayers);
+  const destroyTiles = useTileStore(state => state.destroyTiles);
   
   const frameRef = useRef<number | null>(null);
   const prevTimeRef = useRef<number>(0);
@@ -94,17 +94,12 @@ function useTileMapRenderer(ctx: CanvasRenderingContext2D | null, gameWidth: num
   }, [updateCamera, draw]);
 
   useEffect(() => {
-    const newInput = new Input();
-    const newMap = new Map();
-    const newCamera = new Camera2D(newMap, gameWidth, gameHeight);
-    setMap(newMap);
-    setCamera(newCamera);
-    setInput(newInput);
+    setupLayers(gameWidth, gameHeight)
 
     return () => {
-      newInput.destroy();
+      destroyTiles();
     }
-  }, [gameWidth, gameHeight]);
+  }, [gameWidth, gameHeight, setupLayers, destroyTiles]);
 
   // start frame loop
   useEffect(() => {

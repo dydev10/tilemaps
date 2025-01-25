@@ -1,7 +1,7 @@
-import Map from "./Map";
+import TileMap from "./TileMap";
 
 export default class Camera2D {
-  map: Map;
+  map: TileMap;
   speed: number;
   x: number;
   y: number;
@@ -10,7 +10,7 @@ export default class Camera2D {
   width: number;
   height: number;
   
-  constructor(map: Map, width: number, height: number) {
+  constructor(map: TileMap, width: number, height: number) {
     this.map = map;
     this.width = width;
     this.height = height;
