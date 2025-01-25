@@ -104,7 +104,7 @@ function useTileMapRenderer(ctx: CanvasRenderingContext2D | null, gameWidth: num
     return () => {
       newInput.destroy();
     }
-  }, []);
+  }, [gameWidth, gameHeight]);
 
   // start frame loop
   useEffect(() => {
