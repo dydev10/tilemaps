@@ -25,3 +25,7 @@ dist-ssr
 
 .env
 *.env
+
+# local project todo file
+.todo.md
+*.todo.md
