@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import useTileStore from "../stores/useTileStore";
 import TileMap from "../engine/TileMap";
+import { drawOutline, drawText } from "../helpers/canvas";
 
 function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
@@ -12,14 +13,12 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
 
   const drawTileNumber = (ctx: CanvasRenderingContext2D, map: TileMap, col: number, row: number) => {
     const tileNum = map.getTileIndex(col, row) + 1;
-    const x = col * map.tileSize;
-    const y = row * map.tileSize;
+    const tileCol = col * map.tileSize;
+    const tileRow = row * map.tileSize;
+    const x = tileCol + map.tileSize / 4;
+    const y = tileRow +  map.tileSize / 4;
 
-    ctx.fillStyle = "black";
-    ctx.font = "20px Arial";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    ctx.fillText(`${tileNum}`, x + map.tileSize / 4, y +  map.tileSize / 4);
+    drawText(ctx, x , y, `${tileNum}`);
   }
 
   const drawLayer = useCallback((layer: number) => {
@@ -58,9 +57,8 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
         // draw
         drawTileNumber(ctx, map, col, row);
         if (showGrid) {
-          ctx.strokeStyle = "black";
-          ctx.lineWidth = 1;
-          ctx.strokeRect(
+          drawOutline(
+            ctx,
             col * map.tileSize,
             row * map.tileSize,
             map.tileSize,
@@ -74,11 +72,14 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
     if (hoveredTile) {      
       ctx.strokeStyle = "red";
       ctx.lineWidth = 2;
-      ctx.strokeRect(
+      drawOutline(
+        ctx,
         hoveredTile.col * map.tileSize,
         hoveredTile.row * map.tileSize,
         map.tileSize,
         map.tileSize,
+        '#ffcccc',
+        2
       );
     }
   }, [ctx, previewHeight, previewWidth, map, input, showGrid]);

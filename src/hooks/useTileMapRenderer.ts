@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import useTileStore from "../stores/useTileStore";
+import { drawOutline } from "../helpers/canvas";
 
 function useTileMapRenderer(ctx: CanvasRenderingContext2D | null, gameWidth: number, gameHeight: number, showGrid: boolean) {
   const input = useTileStore(state => state.input);
@@ -63,7 +64,8 @@ function useTileMapRenderer(ctx: CanvasRenderingContext2D | null, gameWidth: num
         );
 
         if (showGrid) {
-          ctx.strokeRect(
+          drawOutline(
+            ctx,
             Math.round(x),
             Math.round(y),
             map.tileSize,
