@@ -2,9 +2,9 @@
 export type LayerTiles = number[];
 
 export default class TileMap {
-  cols: number;
-  rows: number;
-  tileSize: number;
+  private _tileSize: number;
+  private _cols: number;
+  private _rows: number;
   
   image: HTMLImageElement;
   imageTile: number;
@@ -19,9 +19,9 @@ export default class TileMap {
   previewHeight?: number;
 
   constructor(layers: number[][], previewWidth?: number, previewHeight?: number) {
-    this.cols = 12;
-    this.rows = 12;
-    this.tileSize = 64;
+    this._cols = 12;
+    this._rows = 12;
+    this._tileSize = 64;
 
     this.image = document.getElementById('tilemap-source') as HTMLImageElement;
     this.imageTile = 32;
@@ -32,27 +32,56 @@ export default class TileMap {
     // preview things
     if (previewWidth) {
       this.previewWidth = previewWidth;
-      this.tileSize = (previewWidth / 4); 
-      this.cols = 4; 
+      this._tileSize = (previewWidth / 4); 
+      this._cols = 4; 
     }
     if (previewHeight) {
       this.previewHeight = previewHeight;
-      this.tileSize = (previewHeight / 4); 
-      this.rows = 4;
+      this._tileSize = (previewHeight / 4); 
+      this._rows = 4;
     }
   }
 
-  getTileIndex = (col: number, row: number): number => row * this.cols + col
+  /**
+   * getters & setters
+   */
+  public get tileSize() {
+    return this._tileSize;
+  }
+  public set tileSize(size: number) {
+    this._tileSize = size;
+  }
+
+  public get cols() {
+    return this._cols;
+  }
+  public set cols(cols: number) {
+    this._cols = cols;
+  }
+
+  public get rows() {
+    return this._rows;
+  }
+  public set rows(rows: number) {
+    this._rows = rows;
+  }
+
+
+  /**
+   * methods
+   */
+
+  getTileIndex = (col: number, row: number): number => row * this._cols + col
 
   getTile = (layer: number, col: number, row: number): number => {
-    return this.layers[layer][row * this.cols + col]
+    return this.layers[layer][row * this._cols + col]
   }
 
   saveTileNumbers = (): number[][] => {
     const savedArray: number[][] = [];
-    for (let row = 0; row < this.rows; row++) {
+    for (let row = 0; row < this._rows; row++) {
       const sCols = [];
-      for (let col = 0; col < this.cols; col++) {
+      for (let col = 0; col < this._cols; col++) {
         sCols.push(this.getTileIndex(col, row) + 1);
       }
       savedArray.push(sCols);
@@ -67,23 +96,23 @@ export default class TileMap {
   setPreviewTileSize = (size: number) => {
     // preview things
     if (this.previewWidth) {
-      this.cols = (this.previewWidth / size); 
-      this.tileSize = size; ; 
+      this._cols = (this.previewWidth / size); 
+      this._tileSize = size; ; 
    }
    if (this.previewHeight) {
-     this.rows = (this.previewHeight / size);
-     this.tileSize = size; 
+     this._rows = (this.previewHeight / size);
+     this._tileSize = size; 
    }
   }
   setPreviewTileCols = (cols: number) => {
      // preview things
      if (this.previewWidth) {
-      this.tileSize = (this.previewWidth / cols); 
-      this.cols = cols; 
+      this._tileSize = (this.previewWidth / cols); 
+      this._cols = cols; 
     }
     if (this.previewHeight) {
-      this.tileSize = (this.previewHeight / cols); 
-      this.rows = cols;
+      this._tileSize = (this.previewHeight / cols); 
+      this._rows = cols;
     }
   }
 
@@ -95,23 +124,23 @@ export default class TileMap {
   setEditorTileSize = (size: number) => {
     // preview things
     if (this.image.width) {
-      this.cols = (this.image.width / size); 
-      this.tileSize = size; ; 
+      this._cols = (this.image.width / size); 
+      this._tileSize = size; ; 
    }
    if (this.image.height) {
-     this.rows = (this.image.height / size);
-     this.tileSize = size; 
+     this._rows = (this.image.height / size);
+     this._tileSize = size; 
    }
  }
   setEditorTileCols = (cols: number) => {
      // preview things
      if (this.image.width) {
-      this.tileSize = (this.image.width / cols); 
-      this.cols = cols; 
+      this._tileSize = (this.image.width / cols); 
+      this._cols = cols; 
     }
     if (this.image.height) {
-      this.tileSize = (this.image.height / cols); 
-      this.rows = cols;
+      this._tileSize = (this.image.height / cols); 
+      this._rows = cols;
     }
   }
 }

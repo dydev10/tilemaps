@@ -12,26 +12,17 @@ export default class TileMapEdit extends TileMap {
       this.tileSize = 64;      
     }
   }
-  
+
   /**
-   * editor
+   * methods
   */
 
-  setEditorTileSize = (size: number) => {
-    // preview things
-    if (this.image.width) {
-      this.cols = (this.image.width / size); 
-      this.tileSize = size; ; 
-   }
-   if (this.image.height) {
-     this.rows = (this.image.height / size);
-     this.tileSize = size; 
-   }
- }
-  setEditorTileCols = (cols: number) => {
+  override setEditorTileSize = (size: number) => {
+    this.tileSize = size;
+  }
+  override setEditorTileCols = (cols: number) => {
     console.log('!!! xxxx NOT ALLOWED xxxx');
-     
-    
+
     // preview things
      if (this.image.width) {
       this.tileSize = (this.image.width / cols); 
