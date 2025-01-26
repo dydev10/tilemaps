@@ -48,6 +48,18 @@ export default class TileMap {
     return this.layers[layer][row * this.cols + col]
   }
 
+  saveTileNumbers = (): number[][] => {
+    const savedArray: number[][] = [];
+    for (let row = 0; row < this.rows; row++) {
+      const sCols = [];
+      for (let col = 0; col < this.cols; col++) {
+        sCols.push(this.getTileIndex(col, row) + 1);
+      }
+      savedArray.push(sCols);
+    }
+    return savedArray;
+  }
+
   setPreviewTileSize = (size: number) => {
     // preview things
     if (this.previewWidth) {
