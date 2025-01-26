@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import useTileStore from "../stores/useTileStore";
-import { drawOutline } from "../helpers/canvas";
+import { drawImageTile, drawOutline } from "../helpers/canvas";
 
 function useTileMapRenderer(ctx: CanvasRenderingContext2D | null, gameWidth: number, gameHeight: number, showGrid: boolean) {
   const input = useTileStore(state => state.input);
@@ -51,16 +51,19 @@ function useTileMapRenderer(ctx: CanvasRenderingContext2D | null, gameWidth: num
         const x = (col - startCol) * map.tileSize + offsetX;
         const y = (row - startRow) * map.tileSize + offsetY;
 
-        ctx.drawImage(
+        drawImageTile(
+          ctx,
           map.image,
-          ((tile - 1) * map.imageTile) % map.image.width,  // sx,
-          Math.floor((tile - 1) / map.imageCols) * map.imageTile,  // sy,
-          map.imageTile,  // sw,
-          map.imageTile,  // sh,
           Math.round(x),
           Math.round(y),
           map.tileSize,
-          map.tileSize
+          map.tileSize,
+          {
+            x: ((tile - 1) * map.imageTile) % map.image.width,
+            y: Math.floor((tile - 1) / map.imageCols) * map.imageTile,
+            width: map.imageTile,
+            height: map.imageTile,
+          },
         );
 
         if (showGrid) {

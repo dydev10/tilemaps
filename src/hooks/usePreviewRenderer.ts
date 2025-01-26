@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import useTileStore from "../stores/useTileStore";
 import TileMap from "../engine/TileMap";
-import { drawOutline, drawText } from "../helpers/canvas";
+import { drawImage, drawOutline, drawText } from "../helpers/canvas";
 
 function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
@@ -33,19 +33,17 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
     ctx.fillStyle = "#ffeeee";
     ctx.fillRect(0, 0, previewWidth, previewHeight);  
 
-    ctx.drawImage(
+    // draw full preview image and fit it in preview size
+    drawImage(
+      ctx,
       map.image,
-      0,  // sx,
-      0,  // sy,
-      map.image.width,  // sw,
-      map.image.height,  // sh,
       0,
       0,
       previewWidth,
       previewHeight,
     );
 
-    // grid
+    // tile grid
     for (let row = 0; row < map.rows; row++) {
       for (let col = 0; col < map.cols; col++) {
         const tile = map.getTile(layer, col, row);

@@ -64,3 +64,46 @@ export const drawOutline = (
   ctx.strokeRect(x, y, width, height);
 };
 
+export const drawImage = (
+  ctx: CanvasRenderingContext2D,
+  sourceImage: HTMLImageElement,
+  x: number = 0,
+  y: number = 0,
+  width?: number,
+  height?: number,
+) => {
+  if (sourceImage) {
+    ctx.drawImage(
+      sourceImage,
+      x,
+      y,
+      width ?? sourceImage.width,
+      height?? sourceImage.height,
+    );
+  }
+};
+
+export const drawImageTile = (
+  ctx: CanvasRenderingContext2D,
+  sourceImage: HTMLImageElement,
+  x: number,
+  y: number,
+  width: number,
+  height: number,
+  crop: { x: number, y: number, width: number, height: number }
+) => {
+  if (sourceImage) {
+    ctx.drawImage(
+      sourceImage,
+      crop.x ?? 0,  // sx,
+      crop.y ?? 0,  // sy,
+      crop.width ?? sourceImage.width,  // sw,
+      crop.height ?? sourceImage.height,  // sh,
+      x,
+      y,
+      width,
+      height,
+    );
+  }
+};
+
