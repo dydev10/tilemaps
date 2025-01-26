@@ -2,6 +2,8 @@ import { create } from "zustand";
 import Input from "../engine/Input";
 import TileMap from "../engine/TileMap";
 import Camera2D from "../engine/Camera2D";
+import Viewport from "../engine/Viewport";
+import Camera from "../engine/Camera";
 
 const sampleLayers = [
   [
@@ -55,6 +57,8 @@ type PreviewTiles = {
   map: TileMap | null,
   size: number,
   cols: number,
+  viewport?: Viewport,
+  camera?: Camera,
 }
 
 // // Live tiles set model
@@ -66,6 +70,7 @@ type PreviewTiles = {
 //   setup: (gameWidth: number, gameHeight: number) => void;
 //   update: (imageConfig: { tileSize?: number, tileCols?: number }) => void;
 //   updateInput: (data: { mouse?: Point }) => void;
+//   updateCamera: (deltaTime: number) => void;
 //   setTileSize: (size: number) => void;
 //   setCols: (cols: number) => void;
 //   destroy: () => void;
@@ -91,6 +96,7 @@ type TileStore = {
   setupEditor: (editorWidth: number, editorHeight: number) => void;
   updateEditor: (imageConfig: { tileSize?: number, tileCols?: number }) => void;
   updateEditorInput: (data: { mouse?: Point }) => void;
+  updateEditorCamera: (deltaTime: number, speedX: number, speedY: number) => void;
   setEditorSize: (size: number) => void;
   setEditorCols: (cols: number) => void;
   destroyEditor: () => void;
@@ -218,10 +224,14 @@ const useTileStore = create<TileStore>((set, get) =>({
     const layers = structuredClone(sampleLayers);
     const input = new Input();
     const map = new TileMap(layers, editorWidth, editorHeight);
+    const viewport = new Viewport(map, editorWidth, editorHeight);
+    const camera = new Camera(map, viewport);
     set({
       editor: {
         input,
         map,
+        viewport,
+        camera,
         active: PreviewProps.COLS,
         size: 32,
         cols: 4,
@@ -260,6 +270,11 @@ const useTileStore = create<TileStore>((set, get) =>({
     if (input && mouse) {
       input.setMouseXY(mouse);
     }
+  },
+  updateEditorCamera: (deltaTime: number, speedX: number, speedY: number) => {
+    // console.log(deltaTime, speedX, speedY);
+    const { camera } = get().editor;
+    camera?.move(deltaTime, speedX, speedY);    
   },
   setEditorSize: (size: number) => {
     set({

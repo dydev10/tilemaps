@@ -5,11 +5,37 @@ import { clearCanvas, drawImage, drawOutline, drawText } from "../helpers/canvas
 
 function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
+  const prevTimeRef = useRef<number>(0);
   
   const input = useTileStore(state => state.editor.input);
   const map = useTileStore(state => state.editor.map);
+  const viewport = useTileStore(state => state.editor.viewport);
   const setupEditor = useTileStore(state => state.setupEditor);
-  const destroyEditor = useTileStore(state => state.destroyEditor);
+  const moveCamera = useTileStore(state => state.updateEditorCamera);
+  const destroyEditor = useTileStore(state => state.destroyEditor);  
+
+  const updateCamera = useCallback((deltaTime: number) => {
+    if (!ctx || !input) return;
+
+    let speedX = 0;
+    let speedY = 0;
+    const { keys } = input;
+    
+    if (keys.length && keys[0] === 'KeyA') {
+      speedX = -1;
+    }
+    if (keys.length && keys[0] === 'KeyD') {
+      speedX = 1;
+    }
+    if (keys.length && keys[0] === 'KeyW') {
+      speedY = -1;
+    }
+    if (keys.length && keys[0] === 'KeyS') {
+      speedY = 1;
+    }    
+
+    moveCamera(deltaTime, speedX, speedY);
+  }, [ctx, input, moveCamera]);
 
   const drawTileNumber = (ctx: CanvasRenderingContext2D, map: TileMap, col: number, row: number) => {
     const tileNum = map.getTileIndex(col, row) + 1;
@@ -22,11 +48,13 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
   }
 
   const drawLayer = useCallback((layer: number) => {
-    if (!ctx || !map || !input) return;
+    if (!ctx || !map || !input || !viewport) return;
 
     // Convert to tile coordinates
     let hoveredTile = null;
     const { mouse } = input;
+    const { offset, startTile, endTile } = viewport;
+
     const mouseCol = Math.floor(mouse.x / map.tileSize);
     const mouseRow = Math.floor(mouse.y / map.tileSize);
 
@@ -41,9 +69,10 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     );
 
     // tile grid
-    for (let row = 0; row < map.rows; row++) {
-      for (let col = 0; col < map.cols; col++) {
+    for (let row = startTile.y; row <= endTile.y; row++) {
+      for (let col = startTile.x; col <= endTile.x; col++) {
         const tile = map.getTile(layer, col, row);
+
         // hover tile
         if (mouseCol === col && mouseRow === row) {
           hoveredTile = { col, row };
@@ -54,8 +83,8 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
         if (showGrid) {
           drawOutline(
             ctx,
-            col * map.tileSize,
-            row * map.tileSize,
+            offset.x + col * map.tileSize,
+            offset.y + row * map.tileSize,
             map.tileSize,
             map.tileSize,
           );
@@ -67,15 +96,15 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     if (hoveredTile) {      
       drawOutline(
         ctx,
-        hoveredTile.col * map.tileSize,
-        hoveredTile.row * map.tileSize,
+        offset.x + hoveredTile.col * map.tileSize,
+        offset.y + hoveredTile.row * map.tileSize,
         map.tileSize,
         map.tileSize,
         '#ffcccc',
         2
       );
     }
-  }, [ctx, previewHeight, previewWidth, map, input, showGrid]);
+  }, [ctx, previewHeight, previewWidth, input, map, viewport, showGrid]);
   
   const draw = useCallback(() => {
     if (!ctx) return;
@@ -87,11 +116,15 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     // drawLayer(1);
   }, [ctx, drawLayer]);
 
-  const frame = useCallback(() => {
+  const frame = useCallback((time: DOMHighResTimeStamp) => {
+    const deltaTime = (time - prevTimeRef.current) / 1000; 
+    prevTimeRef.current = time; 
+    
+    updateCamera(deltaTime);
     draw();
     
     frameRef.current = requestAnimationFrame(frame);
-  }, [draw]);
+  }, [updateCamera, draw]);
 
   useEffect(() => {
     setupEditor(previewWidth, previewHeight)
