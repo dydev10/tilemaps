@@ -1,6 +1,6 @@
 import React, { ChangeEvent, MouseEvent, useCallback, useRef, useState } from "react";
 // import layerImage from '../assets/tilemap1layer.png'
-// import worldImage from '../assets/worldtileset.png'
+import worldImage from '../assets/worldtileset.png'
 import fullMap from '../assets/fullMap.png'
 import usePreviewEditor from "../hooks/usePreviewEditor";
 import useBoundStore from "../stores/useBoundStore";
@@ -99,7 +99,7 @@ const PreviewEditor: React.FC = () => {
         }}
       /> */}
       
-      {/* <img
+      <img
         alt="Hidden tilemap source img"
         src={worldImage}
         id="tilemap-source"
@@ -107,9 +107,9 @@ const PreviewEditor: React.FC = () => {
           // visibility: 'hidden',
           display: 'none',
         }}
-      /> */}
+      />
 
-      <img
+      {/* <img
         alt="Hidden tilemap source img"
         src={fullMap}
         id="tilemap-source"
@@ -117,7 +117,7 @@ const PreviewEditor: React.FC = () => {
           // visibility: 'hidden',
           display: 'none',
         }}
-      />
+      /> */}
       <span>
         <input
           name="imageTile"

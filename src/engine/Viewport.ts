@@ -46,11 +46,26 @@ export default class Viewport {
     };
 
     // start corner
-    this.startTile.x = viewTile.x - 1 - Math.ceil((this.screen.x / 2) / this.map.tileSize);
-    this.startTile.y = viewTile.y - 1 - Math.ceil((this.screen.y / 2) / this.map.tileSize);
+    this.startTile.x = viewTile.x - 1 - Math.floor((this.screen.x / 2) / this.map.tileSize);
+    this.startTile.y = viewTile.y - 1 - Math.floor((this.screen.y / 2) / this.map.tileSize);
     
     // end corner
     this.endTile.x = viewTile.x + 1 + Math.ceil((this.screen.x / 2) / this.map.tileSize);
     this.endTile.y = viewTile.y + 1 + Math.ceil((this.screen.y / 2) / this.map.tileSize);
+  }
+
+  // calculate values using this.[prop] to avoid using state(often outdated or need to be subscribed) for calculations
+  getViewportCol = (col: number): number => {
+    return col - this.startTile.x;
+  }
+  getViewportRow = (row: number): number => {
+    return row - this.startTile.y;
+  }
+  
+  getViewportX = (col: number): number => {
+    return (col - this.startTile.x) * this.map.tileSize + this.offset.x;
+  }
+  getViewportY = (row: number): number => {
+    return (row - this.startTile.y) * this.map.tileSize + this.offset.y;
   }
 }

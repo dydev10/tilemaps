@@ -78,11 +78,11 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     for (let row = startTile.y; row <= endTile.y; row++) {
       for (let col = startTile.x; col <= endTile.x; col++) {
         const tile = map.getTile(layer, col, row);
-        const offCol = col - startTile.x;
-        const offRow = row - startTile.y;
-        const x = offCol * map.tileSize + offset.x;
-        const y = offRow * map.tileSize + offset.y;
-
+        const offCol = viewport.getViewportCol(col);
+        const offRow = viewport.getViewportRow(row);;
+        const x = viewport.getViewportX(col);
+        const y = viewport.getViewportY(row);
+        
         // hover tile
         if (mouseCol === col && mouseRow === row) {
           hoveredTile = { col, row };
@@ -151,7 +151,7 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
   // start frame loop
   useEffect(() => {
     frameRef.current = requestAnimationFrame(frame);
-    
+
     return () => {
       if (frameRef.current) {
         cancelAnimationFrame(frameRef.current);
