@@ -20,13 +20,13 @@ const PreviewEditor: React.FC = () => {
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
 
   // ui 
-  const updatePreview = useTileStore(state => state.updatePreview);
+  const updateEditor = useTileStore(state => state.updateEditor);
+  const updateEditorInput = useTileStore(state => state.updateEditorInput);
   // const activeTileProp = useTileStore(state => state.preview.active);
-  const tileSize = useTileStore(state => state.preview.size);
-  const tileCols = useTileStore(state => state.preview.cols);
-  const setTileSize = useTileStore(state => state.setPreviewSize);
-  const setTileCols = useTileStore(state => state.setPreviewCols);
-  const updatePreviewInput = useTileStore(state => state.updatePreviewInput);
+  const tileSize = useTileStore(state => state.editor.size);
+  const tileCols = useTileStore(state => state.editor.cols);
+  const setTileSize = useTileStore(state => state.setEditorSize);
+  const setTileCols = useTileStore(state => state.setEditorCols);
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
@@ -41,7 +41,7 @@ const PreviewEditor: React.FC = () => {
 
 
   const handleApplySize = () => {
-    updatePreview({
+    updateEditor({
       tileSize,
     });
   }
@@ -52,7 +52,7 @@ const PreviewEditor: React.FC = () => {
   }
 
   const handleApplyCol = () => {
-    updatePreview({
+    updateEditor({
       tileCols,
     });
   }
@@ -74,8 +74,8 @@ const PreviewEditor: React.FC = () => {
     const mouseX = (event.clientX - rect.left) * scaleX;
     const mouseY = (event.clientY - rect.top) * scaleY;
 
-    updatePreviewInput({ mouse: { x: mouseX, y: mouseY } });
-  }, [updatePreviewInput]);
+    updateEditorInput({ mouse: { x: mouseX, y: mouseY } });
+  }, [updateEditorInput]);
 
   return (
     <div className="preview-image">

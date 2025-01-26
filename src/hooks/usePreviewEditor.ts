@@ -6,10 +6,10 @@ import { clearCanvas, drawImage, drawOutline, drawText } from "../helpers/canvas
 function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
   
-  const input = useTileStore(state => state.preview.input);
-  const map = useTileStore(state => state.preview.map);
-  const setupPreview = useTileStore(state => state.setupPreview);
-  const destroyPreview = useTileStore(state => state.destroyPreview);
+  const input = useTileStore(state => state.editor.input);
+  const map = useTileStore(state => state.editor.map);
+  const setupEditor = useTileStore(state => state.setupEditor);
+  const destroyEditor = useTileStore(state => state.destroyEditor);
 
   const drawTileNumber = (ctx: CanvasRenderingContext2D, map: TileMap, col: number, row: number) => {
     const tileNum = map.getTileIndex(col, row) + 1;
@@ -94,12 +94,12 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
   }, [draw]);
 
   useEffect(() => {
-    setupPreview(previewWidth, previewHeight)
+    setupEditor(previewWidth, previewHeight)
 
     return () => {
-      destroyPreview();
+      destroyEditor();
     }
-  }, [previewWidth, previewHeight, setupPreview, destroyPreview]);
+  }, [previewWidth, previewHeight, setupEditor, destroyEditor]);
 
   // start frame loop
   useEffect(() => {

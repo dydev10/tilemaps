@@ -57,12 +57,26 @@ type PreviewTiles = {
   cols: number,
 }
 
+// // Live tiles set model
+// export interface LiveTiles {
+//   input: Input | null,
+//   map: TileMap | null,
+//   size: number,
+//   cols: number,
+//   setup: (gameWidth: number, gameHeight: number) => void;
+//   update: (imageConfig: { tileSize?: number, tileCols?: number }) => void;
+//   updateInput: (data: { mouse?: Point }) => void;
+//   setTileSize: (size: number) => void;
+//   setCols: (cols: number) => void;
+//   destroy: () => void;
+// }
+
 type TileStore = {
   layers: number[][],
   input: Input | null,
   map: TileMap | null,
   camera: Camera2D | null,
-  setupLayers:(gameWidth: number, gameHeight: number) => void,
+  setupLayers: (gameWidth: number, gameHeight: number) => void,
   destroyTiles:() => void,
 
   preview: PreviewTiles,
@@ -72,6 +86,14 @@ type TileStore = {
   setPreviewSize: (size: number) => void;
   setPreviewCols: (cols: number) => void;
   destroyPreview: () => void;
+
+  editor: PreviewTiles,
+  setupEditor: (editorWidth: number, editorHeight: number) => void;
+  updateEditor: (imageConfig: { tileSize?: number, tileCols?: number }) => void;
+  updateEditorInput: (data: { mouse?: Point }) => void;
+  setEditorSize: (size: number) => void;
+  setEditorCols: (cols: number) => void;
+  destroyEditor: () => void;
 }
 
 const useTileStore = create<TileStore>((set, get) =>({
@@ -82,7 +104,32 @@ const useTileStore = create<TileStore>((set, get) =>({
   input: null,
   map: null,
   camera: null,
+
+  /**
+   * reducers
+   */
+
+  setupLayers: (gameWidth: number, gameHeight: number) => {
+    const layers = structuredClone(sampleLayers);
+    const input = new Input();
+    const map = new TileMap(layers);
+    const camera = new Camera2D(map, gameWidth, gameHeight);
+    set({
+      layers,
+      input,
+      map,
+      camera,
+    })
+  },
+
+  destroyTiles: () => {
+    get().input?.destroy();
+  },
   
+
+  /**
+   * preview
+   */
   preview: {
     input: null,
     map: null,
@@ -90,10 +137,6 @@ const useTileStore = create<TileStore>((set, get) =>({
     size: 32,
     cols: 4,
   },
-  
-  /**
-   * reducers
-  */
   setupPreview: (previewWidth: number, previewHeight: number) => {
     const layers = structuredClone(sampleLayers);
     const input = new Input();
@@ -158,24 +201,84 @@ const useTileStore = create<TileStore>((set, get) =>({
     })
   },
   destroyPreview: () => {
-    get().input?.destroy();
+    get().preview.input?.destroy();
   },
 
-  setupLayers: (gameWidth: number, gameHeight: number) => {
+  /**
+   * editor
+   */
+  editor: {
+    input: null,
+    map: null,
+    active: PreviewProps.COLS,
+    size: 32,
+    cols: 4,
+  },
+  setupEditor: (editorWidth: number, editorHeight: number) => {
     const layers = structuredClone(sampleLayers);
     const input = new Input();
-    const map = new TileMap(layers);
-    const camera = new Camera2D(map, gameWidth, gameHeight);
+    const map = new TileMap(layers, editorWidth, editorHeight);
     set({
-      layers,
-      input,
-      map,
-      camera,
+      editor: {
+        input,
+        map,
+        active: PreviewProps.COLS,
+        size: 32,
+        cols: 4,
+      }
     })
   },
+  updateEditor: (imageConfig: { tileSize?: number, tileCols?: number }) => {
+    const { tileSize, tileCols } = imageConfig;
+    const map = get().editor.map;
+    if (!map) return;
 
-  destroyTiles: () => {
-    get().input?.destroy();
+    if (tileSize) {
+      map.setPreviewTileSize(tileSize);
+      set({
+        editor: {
+          ...get().editor,
+          active: PreviewProps.SIZE,
+        }
+      })
+    }
+
+    if (tileCols) {
+      map.setPreviewTileCols(tileCols);
+      set({
+        editor: {
+          ...get().editor,
+          active: PreviewProps.SIZE,
+        }
+      })
+    }
+  },
+  updateEditorInput: (data: { mouse?: Point }) => {
+    const { input } = get().editor;
+    const { mouse } = data;
+    
+    if (input && mouse) {
+      input.setMouseXY(mouse);
+    }
+  },
+  setEditorSize: (size: number) => {
+    set({
+      editor: {
+        ...get().editor,
+        size,
+      }
+    })
+  },
+  setEditorCols: (cols: number) => {
+    set({
+      editor: {
+        ...get().editor,
+        cols,
+      }
+    })
+  },
+  destroyEditor: () => {
+    get().editor?.input?.destroy();
   },
 }));
 
