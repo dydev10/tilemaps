@@ -1,9 +1,15 @@
+type MouseXY = {
+  x: number,
+  y: number,
+};
+
 export default class Input {
   keys: string[];
+  mouse: MouseXY;
 
   constructor() {
     this.keys = [];
-
+    this.mouse = { x: 0, y: 0 }
     // add listeners
     this.setup();
   }
@@ -17,6 +23,13 @@ export default class Input {
   
   onKeyUp = (e: KeyboardEvent) => {
     this.keys = this.keys.filter((val) => val !== e.code);    
+  }
+
+  setMouseXY = (point: MouseXY) => {
+    this.mouse = {
+      x: point.x,
+      y: point.y,
+    };
   }
 
   setup = () => {    

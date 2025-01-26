@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useRef, useState } from "react";
+import React, { ChangeEvent, MouseEvent, useCallback, useRef, useState } from "react";
 // import layerImage from '../assets/tilemap1layer.png'
-import worldImage from '../assets/worldtileset.png'
+// import worldImage from '../assets/worldtileset.png'
 import fullMap from '../assets/fullMap.png'
 
 import usePreviewRenderer from "../hooks/usePreviewRenderer";
@@ -26,6 +26,7 @@ const PreviewImage: React.FC = () => {
   const tileCols = useTileStore(state => state.preview.cols);
   const setTileSize = useTileStore(state => state.setPreviewSize);
   const setTileCols = useTileStore(state => state.setPreviewCols);
+  const updatePreviewInput = useTileStore(state => state.updatePreviewInput);
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
@@ -61,10 +62,26 @@ const PreviewImage: React.FC = () => {
     setTileCols(parseInt(value, 10));
   }
 
+  const handleMouseMove = useCallback((event: MouseEvent) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+
+    // Get mouse position relative to the canvas
+    const mouseX = (event.clientX - rect.left) * scaleX;
+    const mouseY = (event.clientY - rect.top) * scaleY;
+
+    updatePreviewInput({ mouse: { x: mouseX, y: mouseY } });
+  }, [updatePreviewInput]);
+
   return (
     <div className="preview-image">
       <canvas
         ref={canvasRef}
+        onMouseMove={handleMouseMove}
         style={{
           border: '1px solid black',
           background: '#ffaaaa',

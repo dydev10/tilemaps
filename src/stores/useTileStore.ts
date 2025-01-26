@@ -34,6 +34,16 @@ const sampleLayers = [
   ],
 ];
 
+export type Point = {
+  x: number,  // float
+  y: number,  // float
+}
+
+export type Cell = {
+  col: number,  // int
+  row: number,  // int
+}
+
 export enum PreviewProps {
   SIZE = 'size',
   COLS = 'cols',
@@ -58,6 +68,7 @@ type TileStore = {
   preview: PreviewTiles,
   setupPreview: (previewWidth: number, previewHeight: number) => void;
   updatePreview: (imageConfig: { tileSize?: number, tileCols?: number }) => void;
+  updatePreviewInput: (data: { mouse?: Point }) => void;
   setPreviewSize: (size: number) => void;
   setPreviewCols: (cols: number) => void;
   destroyPreview: () => void;
@@ -120,6 +131,14 @@ const useTileStore = create<TileStore>((set, get) =>({
           active: PreviewProps.SIZE,
         }
       })
+    }
+  },
+  updatePreviewInput: (data: { mouse?: Point }) => {
+    const { input } = get().preview;
+    const { mouse } = data;
+    
+    if (input && mouse) {
+      input.setMouseXY(mouse);
     }
   },
   setPreviewSize: (size: number) => {
