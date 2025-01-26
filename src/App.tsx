@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import './App.css'
 import TileCamera from './components/TileCamera'
-import PreviewImage from './components/PreviewImage'
+// import PreviewImage from './components/PreviewImage'
+import PreviewEditor from './components/PreviewEditor'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -13,7 +14,8 @@ function App() {
           count is {count}
         </button>
         <TileCamera />
-        <PreviewImage />
+        {/* <PreviewImage /> */}
+        <PreviewEditor />
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
