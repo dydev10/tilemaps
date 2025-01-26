@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import useTileStore from "../stores/useTileStore";
 import TileMap from "../engine/TileMap";
-import { clearCanvas, drawImage, drawOutline, drawText } from "../helpers/canvas";
+import { clearCanvas, drawCircle, drawImage, drawOutline, drawText } from "../helpers/canvas";
 
 function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
@@ -104,6 +104,10 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
         2
       );
     }
+
+    // Debug mouse potion on canvas
+    drawCircle(ctx, mouse.x, mouse.y, 5, "red")
+
   }, [ctx, previewHeight, previewWidth, input, map, viewport, showGrid]);
   
   const draw = useCallback(() => {
