@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import useTileStore from "../stores/useTileStore";
-import { drawImageTile, drawOutline } from "../helpers/canvas";
+import { clearCanvas, drawImageTile, drawOutline } from "../helpers/canvas";
 
 function useTileMapRenderer(ctx: CanvasRenderingContext2D | null, gameWidth: number, gameHeight: number, showGrid: boolean) {
   const input = useTileStore(state => state.input);
@@ -83,6 +83,7 @@ function useTileMapRenderer(ctx: CanvasRenderingContext2D | null, gameWidth: num
     if (!ctx) return;
     // setup canvas config
     ctx.imageSmoothingEnabled = false;
+    clearCanvas(ctx);
 
     drawLayer(0);
     drawLayer(1);

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import useTileStore from "../stores/useTileStore";
 import TileMap from "../engine/TileMap";
-import { drawImage, drawOutline, drawText } from "../helpers/canvas";
+import { clearCanvas, drawImage, drawOutline, drawText } from "../helpers/canvas";
 
 function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
@@ -29,9 +29,6 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
     const { mouse } = input;
     const mouseCol = Math.floor(mouse.x / map.tileSize);
     const mouseRow = Math.floor(mouse.y / map.tileSize);
-
-    ctx.fillStyle = "#ffeeee";
-    ctx.fillRect(0, 0, previewWidth, previewHeight);  
 
     // draw full preview image and fit it in preview size
     drawImage(
@@ -68,8 +65,6 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
 
     // draw hovered tile on top on everything
     if (hoveredTile) {      
-      ctx.strokeStyle = "red";
-      ctx.lineWidth = 2;
       drawOutline(
         ctx,
         hoveredTile.col * map.tileSize,
@@ -86,7 +81,8 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
     if (!ctx) return;
     // setup canvas config
     ctx.imageSmoothingEnabled = false;
-
+    clearCanvas(ctx, '#ffeeee');
+    
     drawLayer(0);
     // drawLayer(1);
   }, [ctx, drawLayer]);

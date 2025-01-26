@@ -4,6 +4,16 @@
  * dom canvas helper functions to provide declarative canvas shape drawing apis
  */
 
+/**
+ *  Always call this BEFORE starting draw, NEVER call this for layer draw or shape draw
+ * @param ctx 
+ * @param color 
+ */
+export const clearCanvas = (ctx: CanvasRenderingContext2D, color: string = 'red') => {
+  ctx.fillStyle = color;
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);  
+}
+
 export const drawCircle = (
   ctx: CanvasRenderingContext2D,
   x: number,
