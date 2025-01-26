@@ -48,13 +48,9 @@ export default class Viewport {
     // start corner
     this.startTile.x = viewTile.x - 1 - Math.ceil((this.screen.x / 2) / this.map.tileSize);
     this.startTile.y = viewTile.y - 1 - Math.ceil((this.screen.y / 2) / this.map.tileSize);
-    if (this.startTile.x < 0) { this.startTile.x = 0 }
-    if (this.startTile.y < 0) { this.startTile.y = 0 }
     
     // end corner
     this.endTile.x = viewTile.x + 1 + Math.ceil((this.screen.x / 2) / this.map.tileSize);
     this.endTile.y = viewTile.y + 1 + Math.ceil((this.screen.y / 2) / this.map.tileSize);
-    if (this.endTile.x > this.map.cols) { this.endTile.x = this.map.cols - 1 }
-    if (this.endTile.y > this.map.rows) { this.endTile.y = this.map.cols - 1 }
   }
 }
