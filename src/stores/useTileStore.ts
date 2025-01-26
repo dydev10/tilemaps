@@ -244,7 +244,7 @@ const useTileStore = create<TileStore>((set, get) =>({
     if (!map) return;
 
     if (tileSize) {
-      map.setPreviewTileSize(tileSize);
+      map.setEditorTileSize(tileSize);
       set({
         editor: {
           ...get().editor,
@@ -254,7 +254,7 @@ const useTileStore = create<TileStore>((set, get) =>({
     }
 
     if (tileCols) {
-      map.setPreviewTileCols(tileCols);
+      map.setEditorTileCols(tileCols);
       set({
         editor: {
           ...get().editor,

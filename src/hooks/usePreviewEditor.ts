@@ -58,20 +58,23 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     const mouseCol = Math.floor(mouse.x / map.tileSize);
     const mouseRow = Math.floor(mouse.y / map.tileSize);
 
-    // draw full preview image and fit it in preview size
+    // draw full preview image
+    // and NOT fit it in preview size
     drawImage(
       ctx,
       map.image,
-      0,
-      0,
-      previewWidth,
-      previewHeight,
+      offset.x + 0,
+      offset.y + 0,
+      map.cols * map.tileSize,
+      map.rows * map.tileSize,
     );
 
     // tile grid
     for (let row = startTile.y; row <= endTile.y; row++) {
       for (let col = startTile.x; col <= endTile.x; col++) {
         const tile = map.getTile(layer, col, row);
+        const x = (col - startTile.x) * map.tileSize + offset.x;
+        const y = (row - startTile.y) * map.tileSize + offset.y;
 
         // hover tile
         if (mouseCol === col && mouseRow === row) {
@@ -83,8 +86,8 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
         if (showGrid) {
           drawOutline(
             ctx,
-            offset.x + col * map.tileSize,
-            offset.y + row * map.tileSize,
+            x,
+            y,
             map.tileSize,
             map.tileSize,
           );
@@ -108,7 +111,7 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     // Debug mouse potion on canvas
     drawCircle(ctx, mouse.x, mouse.y, 5, "red")
 
-  }, [ctx, previewHeight, previewWidth, input, map, viewport, showGrid]);
+  }, [ctx, input, map, viewport, showGrid]);
   
   const draw = useCallback(() => {
     if (!ctx) return;

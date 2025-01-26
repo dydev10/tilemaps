@@ -60,6 +60,10 @@ export default class TileMap {
     return savedArray;
   }
 
+  /**
+   * preview
+  */
+
   setPreviewTileSize = (size: number) => {
     // preview things
     if (this.previewWidth) {
@@ -70,8 +74,7 @@ export default class TileMap {
      this.rows = (this.previewHeight / size);
      this.tileSize = size; 
    }
- }
-
+  }
   setPreviewTileCols = (cols: number) => {
      // preview things
      if (this.previewWidth) {
@@ -80,6 +83,34 @@ export default class TileMap {
     }
     if (this.previewHeight) {
       this.tileSize = (this.previewHeight / cols); 
+      this.rows = cols;
+    }
+  }
+
+  
+  /**
+   * editor
+  */
+
+  setEditorTileSize = (size: number) => {
+    // preview things
+    if (this.image.width) {
+      this.cols = (this.image.width / size); 
+      this.tileSize = size; ; 
+   }
+   if (this.image.height) {
+     this.rows = (this.image.height / size);
+     this.tileSize = size; 
+   }
+ }
+  setEditorTileCols = (cols: number) => {
+     // preview things
+     if (this.image.width) {
+      this.tileSize = (this.image.width / cols); 
+      this.cols = cols; 
+    }
+    if (this.image.height) {
+      this.tileSize = (this.image.height / cols); 
       this.rows = cols;
     }
   }

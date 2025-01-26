@@ -29,7 +29,14 @@ export default class Camera {
     this.maxY = this.map.rows * this.map.tileSize  - this.height;
   }
 
+  updateBounds = () => {
+    this.maxX = this.map.cols * this.map.tileSize - this.width;
+    this.maxY = this.map.rows * this.map.tileSize  - this.height;    
+  };
+
   move = (deltaTime: number, speedX: number, speedY: number) => {
+    this.updateBounds();
+
     this.x += speedX * this.speed * deltaTime;
     this.y += speedY * this.speed * deltaTime;
 
