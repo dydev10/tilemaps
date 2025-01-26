@@ -55,8 +55,8 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     const { mouse } = input;
     const { offset, startTile, endTile } = viewport;
 
-    const mouseCol = Math.floor(mouse.x / map.tileSize);
-    const mouseRow = Math.floor(mouse.y / map.tileSize);
+    const mouseCol = Math.floor((mouse.x - offset.x) / map.tileSize) - startTile.x;
+    const mouseRow = Math.floor((mouse.y - offset.y) / map.tileSize) - startTile.y;
 
     // draw full preview image
     // and NOT fit it in preview size
