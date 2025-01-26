@@ -1,18 +1,18 @@
 import { useCallback, useEffect, useRef } from "react";
-import useTileStore from "../stores/useTileStore";
 import TileMap from "../engine/TileMap";
 import { clearCanvas, drawCircle, drawImage, drawOutline, drawText } from "../helpers/canvas";
+import useBoundStore from "../stores/useBoundStore";
 
 function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
   const prevTimeRef = useRef<number>(0);
-  
-  const input = useTileStore(state => state.editor.input);
-  const map = useTileStore(state => state.editor.map);
-  const viewport = useTileStore(state => state.editor.viewport);
-  const setupEditor = useTileStore(state => state.setupEditor);
-  const moveCamera = useTileStore(state => state.updateEditorCamera);
-  const destroyEditor = useTileStore(state => state.destroyEditor);  
+   
+  const input = useBoundStore(state => state.editor.input);
+  const map = useBoundStore(state => state.editor.map);
+  const viewport = useBoundStore(state => state.editor.viewport);
+  const setupEditor = useBoundStore(state => state.editor.setupEditor);
+  const moveCamera = useBoundStore(state => state.editor.updateEditorCamera);
+  const destroyEditor = useBoundStore(state => state.editor.destroyEditor);  
 
   const updateCamera = useCallback((deltaTime: number) => {
     if (!ctx || !input) return;
@@ -37,14 +37,19 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     moveCamera(deltaTime, speedX, speedY);
   }, [ctx, input, moveCamera]);
 
-  const drawTileNumber = (ctx: CanvasRenderingContext2D, map: TileMap, col: number, row: number) => {
+  const drawTileNumber = (
+    ctx: CanvasRenderingContext2D,
+    map: TileMap,
+    x: number,
+    y: number,
+    col: number,
+    row: number
+  ) => {
     const tileNum = map.getTileIndex(col, row) + 1;
-    const tileCol = col * map.tileSize;
-    const tileRow = row * map.tileSize;
-    const x = tileCol + map.tileSize / 4;
-    const y = tileRow +  map.tileSize / 4;
+    const cornerX = x + map.tileSize / 4;
+    const cornerY = y +  map.tileSize / 4;
 
-    drawText(ctx, x , y, `${tileNum}`);
+    drawText(ctx, cornerX , cornerY, `${tileNum}`);
   }
 
   const drawLayer = useCallback((layer: number) => {
@@ -73,8 +78,10 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     for (let row = startTile.y; row <= endTile.y; row++) {
       for (let col = startTile.x; col <= endTile.x; col++) {
         const tile = map.getTile(layer, col, row);
-        const x = (col - startTile.x) * map.tileSize + offset.x;
-        const y = (row - startTile.y) * map.tileSize + offset.y;
+        const offCol = col - startTile.x;
+        const offRow = row - startTile.y;
+        const x = offCol * map.tileSize + offset.x;
+        const y = offRow * map.tileSize + offset.y;
 
         // hover tile
         if (mouseCol === col && mouseRow === row) {
@@ -82,7 +89,7 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
         }
 
         // draw
-        drawTileNumber(ctx, map, col, row);
+        drawTileNumber(ctx, map, x, y, offCol, offRow);
         if (showGrid) {
           drawOutline(
             ctx,

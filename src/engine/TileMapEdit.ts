@@ -5,10 +5,11 @@ export type LayerTiles = number[];
 export default class TileMapEdit extends TileMap {
   constructor(layers: number[][], previewWidth?: number, previewHeight?: number) {
     super(layers, previewWidth, previewHeight);
-  
+
     if (layers?.length) {
-      this.cols = layers[0].length;
-      this.rows = layers.length;
+      this.cols = Math.floor(Math.sqrt(layers[0].length));
+      this.rows = Math.floor(Math.sqrt(layers[0].length));
+      this.tileSize = 64;      
     }
   }
   

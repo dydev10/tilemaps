@@ -4,6 +4,7 @@ import TileMap from "../engine/TileMap";
 import Camera2D from "../engine/Camera2D";
 import Viewport from "../engine/Viewport";
 import Camera from "../engine/Camera";
+import { Point } from "../types";
 
 const sampleLayers = [
   [
@@ -36,11 +37,6 @@ const sampleLayers = [
   ],
 ];
 
-export type Point = {
-  x: number,  // float
-  y: number,  // float
-}
-
 export type Cell = {
   col: number,  // int
   row: number,  // int
@@ -60,21 +56,6 @@ type PreviewTiles = {
   viewport?: Viewport,
   camera?: Camera,
 }
-
-// // Live tiles set model
-// export interface LiveTiles {
-//   input: Input | null,
-//   map: TileMap | null,
-//   size: number,
-//   cols: number,
-//   setup: (gameWidth: number, gameHeight: number) => void;
-//   update: (imageConfig: { tileSize?: number, tileCols?: number }) => void;
-//   updateInput: (data: { mouse?: Point }) => void;
-//   updateCamera: (deltaTime: number) => void;
-//   setTileSize: (size: number) => void;
-//   setCols: (cols: number) => void;
-//   destroy: () => void;
-// }
 
 type TileStore = {
   layers: number[][],

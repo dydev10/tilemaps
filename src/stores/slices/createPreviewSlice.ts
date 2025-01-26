@@ -27,7 +27,7 @@ export interface PreviewSlice {
   }
 }
 
-const createPreviewSlice: StateCreator<PreviewSlice> = (set) => ({
+const createPreviewSlice: StateCreator<PreviewSlice> = (set, get) => ({
   preview: {
     input: null,
     map: null,
@@ -43,14 +43,17 @@ const createPreviewSlice: StateCreator<PreviewSlice> = (set) => ({
       const viewport = new Viewport(map, previewWidth, previewHeight);
       const camera = new Camera(map, viewport);
       set({
-        input,
-        map,
-        viewport,
-        camera,
-        // size: 32,
-        // cols: 4,
-        size: map.tileSize,
-        cols: map.cols,
+        preview: {
+          ...get().preview,
+          input,
+          map,
+          viewport,
+          camera,
+          // size: 32,
+          // cols: 4,
+          size: map.tileSize,
+          cols: map.cols,
+        }
       });
     },
   }

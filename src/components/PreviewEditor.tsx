@@ -2,9 +2,8 @@ import React, { ChangeEvent, MouseEvent, useCallback, useRef, useState } from "r
 // import layerImage from '../assets/tilemap1layer.png'
 // import worldImage from '../assets/worldtileset.png'
 import fullMap from '../assets/fullMap.png'
-
-import useTileStore from "../stores/useTileStore";
 import usePreviewEditor from "../hooks/usePreviewEditor";
+import useBoundStore from "../stores/useBoundStore";
 
 // const PREVIEW_WIDTH = 256;
 // const PREVIEW_HEIGHT = 256;
@@ -20,13 +19,12 @@ const PreviewEditor: React.FC = () => {
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
 
   // ui 
-  const updateEditor = useTileStore(state => state.updateEditor);
-  const updateEditorInput = useTileStore(state => state.updateEditorInput);
-  // const activeTileProp = useTileStore(state => state.preview.active);
-  const tileSize = useTileStore(state => state.editor.size);
-  const tileCols = useTileStore(state => state.editor.cols);
-  const setTileSize = useTileStore(state => state.setEditorSize);
-  const setTileCols = useTileStore(state => state.setEditorCols);
+  const tileSize = useBoundStore(state => state.editor.size);
+  const tileCols = useBoundStore(state => state.editor.cols);
+  const updateEditor = useBoundStore(state => state.editor.updateEditor);
+  const updateEditorInput = useBoundStore(state => state.editor.updateEditorInput);
+  const setTileSize = useBoundStore(state => state.editor.setEditorSize);
+  const setTileCols = useBoundStore(state => state.editor.setEditorCols);
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
