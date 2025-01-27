@@ -29,3 +29,5 @@ dist-ssr
 # local project todo file
 .todo.md
 *.todo.md
+
+.vercel

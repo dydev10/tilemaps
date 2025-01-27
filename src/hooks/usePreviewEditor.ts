@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import TileMap from "../engine/TileMap";
-import { clearCanvas, drawCircle, drawImageTile, drawOutline, drawText } from "../helpers/canvas";
+import { clearCanvas, drawCircle, drawImageTile, drawOutline } from "../helpers/canvas";
 import useBoundStore from "../stores/useBoundStore";
 import { MouseButtons, MouseXY } from "../engine/Input";
 import Viewport from "../engine/Viewport";
@@ -65,21 +65,6 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
 
     moveCamera(deltaTime, speedX, speedY);
   }, [ctx, input, map, viewport, tileBrush, moveCamera]);
-
-  const drawTileNumber = (
-    ctx: CanvasRenderingContext2D,
-    map: TileMap,
-    x: number,
-    y: number,
-    col: number,
-    row: number
-  ) => {
-    const tileNum = map.getTileIndex(col, row) + 1;
-    const cornerX = x + map.tileSize / 4;
-    const cornerY = y +  map.tileSize / 4;
-
-    drawText(ctx, cornerX , cornerY, `${tileNum}`, 'black');
-  }
 
   const drawLayer = useCallback((layer: number) => {
     if (!ctx || !map || !input || !viewport) return;
