@@ -67,11 +67,14 @@ export const drawOutline = (
   width: number,
   height: number,
   color: string = 'black',
-  thickness: number = 1,
+  thickness: number = 0.1,
+  opacity: number = 1,
 ) => {
+  ctx.globalAlpha = opacity;
   ctx.strokeStyle = color;
   ctx.lineWidth = thickness;
   ctx.strokeRect(x, y, width, height);
+  ctx.globalAlpha = 1;
 };
 
 export const drawImage = (
