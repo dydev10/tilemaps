@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef } from "react";
-import useTileStore from "../stores/useTileStore";
 import TileMap from "../engine/TileMap";
 import { clearCanvas, drawImage, drawOutline, drawText } from "../helpers/canvas";
 import useBoundStore from "../stores/useBoundStore";
+import { MouseXY } from "../engine/Input";
 
 function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
@@ -12,6 +12,17 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
   const setupPreview = useBoundStore(state => state.preview.setupPreview);
   const destroyPreview = useBoundStore(state => state.preview.destroyPreview);
 
+  const getMouseTile = (mouse: MouseXY, map: TileMap) => {
+    const mouseCol = Math.floor(mouse.x / map.tileSize);
+    const mouseRow = Math.floor(mouse.y / map.tileSize);
+
+    return {
+      mouseCol,
+      mouseRow,
+    };
+  }
+  
+  
   const drawTileNumber = (ctx: CanvasRenderingContext2D, map: TileMap, col: number, row: number) => {
     const tileNum = map.getTileIndex(col, row) + 1;
     const tileCol = col * map.tileSize;
@@ -28,8 +39,7 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
     // Convert to tile coordinates
     let hoveredTile = null;
     const { mouse } = input;
-    const mouseCol = Math.floor(mouse.x / map.tileSize);
-    const mouseRow = Math.floor(mouse.y / map.tileSize);
+    const { mouseCol, mouseRow } = getMouseTile(mouse, map);
 
     // draw full preview image and fit it in preview size
     drawImage(
