@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
 // import layerImage from '../assets/tilemap1layer.png'
 // import worldImage from '../assets/worldtileset.png'
-import summerPlain from '../assets/summerPlain.png'
+// import summerPlain from '../assets/summerPlain.png'
+import grass from '../assets/grass.png'
 import PreviewEditor from "./PreviewEditor";
 import PreviewImage from "./PreviewImage";
 import PreviewForm from "./PreviewForm";
@@ -48,7 +49,7 @@ const EditorLayout: React.FC = () => {
       <img
         ref={imageRef}
         alt="Hidden tilemap source img"
-        src={summerPlain}
+        src={grass}
         id="tilemap-source"
         style={{
           display: 'none',
