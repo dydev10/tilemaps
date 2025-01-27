@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import TileCamera from './components/TileCamera'
+// import TileCamera from './components/TileCamera'
 // import PreviewImage from './components/PreviewImage'
 import PreviewEditor from './components/PreviewEditor'
 
@@ -13,7 +13,7 @@ function App() {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
-        <TileCamera />
+        {/* <TileCamera /> */}
         {/* <PreviewImage /> */}
         <PreviewEditor />
       </div>
