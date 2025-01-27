@@ -1,6 +1,8 @@
 /* This file file import npm css files,
 no class definitions */
 
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap');
+
 @import "tailwindcss";
 
 * {
@@ -10,7 +12,7 @@ no class definitions */
 }
 
 html {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Pixelify Sans', "Gill Sans", sans-serif;
   font-size: 16px;
 }
 
@@ -48,8 +50,8 @@ body {
     items-center
     mb-6
     font-medium
-    text-3xl
-    text-emerald-500
+    text-4xl
+    text-emerald-400
   ;
 }
 
@@ -58,10 +60,8 @@ body {
     mt-2    
     justify-center
     items-center
-    font-medium
     text-xs
-    font-mono
-    text-emerald-500
+    text-emerald-600
   ;
 }
 
