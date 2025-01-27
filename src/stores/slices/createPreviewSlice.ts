@@ -11,7 +11,7 @@ export interface PreviewSlice {
     input: Input | null,
     map: TileMap | null,
     setupPreview: (previewWidth: number, previewHeight: number) => void;
-    updatePreview: (imageConfig: { tileSize?: number, tileCols?: number }) => void;
+    updatePreview: (imageConfig: { tileCols?: number, imageTile?: number, chain?: boolean }) => void;
     updatePreviewInput: (data: { mouse?: Point }) => void;
     setPreviewCols: (cols: number) => void;
     destroyPreview: () => void;
@@ -39,13 +39,23 @@ const createPreviewSlice: StateCreator<BoundStore, [], [], PreviewSlice> = (set,
     },
 
     // no subscription triggered, frame updates read/write
-    updatePreview: (imageConfig: { tileSize?: number, tileCols?: number }) => {
-      const { tileCols } = imageConfig;
+    updatePreview: (imageConfig: { tileCols?: number, imageTile?: number, chain?: boolean }) => {
+      const { tileCols, imageTile, chain } = imageConfig;
       const map = get().preview.map;
+      const editorMap = get().editor.map;
       if (!map) return;
-
+      
+      // received imageTile from chain
+      if (imageTile) {
+        map.setPreviewImageTile(imageTile);
+      }
+      
       if (tileCols) {
         map.setPreviewTileCols(tileCols);
+        // update the editor which can not control its own imageTile
+        if(chain && editorMap) {
+          get().editor.updateEditor({ tileSize: map.imageTile })
+        }
       }
     },
     updatePreviewInput: (data: { mouse?: Point }) => {

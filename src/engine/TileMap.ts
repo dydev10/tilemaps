@@ -164,6 +164,19 @@ export default class TileMap {
     this.layers = this.generateLayers();
   }
 
+  setPreviewImageTile = (imageTile: number) => {
+    if (this.previewWidth) {
+      this._cols = Math.floor(this.image.width / imageTile);
+      this._tileSize = (this.previewWidth / this._cols); 
+    }
+    if (this.previewHeight) {
+      this._rows = Math.floor(this.image.height / imageTile);
+      this._tileSize = (this.previewHeight / this._rows); 
+    }
+    // generate new tilemap
+    this.layers = this.generateLayers();
+  }
+
   
   /**
    * editor

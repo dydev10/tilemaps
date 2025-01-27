@@ -45,7 +45,7 @@ export interface EditorSlice {
     viewport: Viewport | null,
     camera: Camera | null,
     setupEditor: (editorWidth: number, editorHeight: number) => void,
-    updateEditor: (imageConfig: { tileSize?: number, tileCols?: number }) => void,
+    updateEditor: (imageConfig: { tileSize: number, chain?: boolean }) => void,
     updateEditorInput: (data: { mouse?: Point }) => void,
     updateEditorCamera: (deltaTime: number, speedX: number, speedY: number) => void,
     setEditorSize: (size: number) => void,
@@ -81,13 +81,17 @@ const createEditorSlice: StateCreator<BoundStore, [], [], EditorSlice> = (set, g
     },
 
     // no subscription triggered, frame updates read/write
-    updateEditor: (imageConfig: { tileSize?: number, tileCols?: number }) => {
-      const { tileSize } = imageConfig;
+    updateEditor: (imageConfig: { tileSize: number, chain?: boolean }) => {
+      const { tileSize, chain } = imageConfig;
       const map = get().editor.map;
+      const previewMap = get().preview.map;
       if (!map) return;
   
-      if (tileSize) {
-        map.setEditorTileSize(tileSize);
+      map.setEditorTileSize(tileSize);
+
+      // update the preview which can not control its cols
+      if(chain && previewMap) {
+        get().preview.updatePreview({ imageTile: map.imageTile })
       }
     },
     updateEditorInput: (data: { mouse?: Point }) => {

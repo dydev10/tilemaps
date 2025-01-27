@@ -1,19 +1,8 @@
 import React, { ChangeEvent } from "react";
-
 import useBoundStore from "../stores/useBoundStore";
-
-const GAME_WIDTH = 512;
-const GAME_HEIGHT = 512;
-// const GAME_WIDTH = 768;
-// const GAME_HEIGHT = 768;
-
-
 
 const PreviewForm: React.FC = () => {
   // controls ui
-  const tileBrush = useBoundStore(state => state.tileBrush);
-  const setTileBrush = useBoundStore(state => state.setTileBrush);
-  
   const tileSize = useBoundStore(state => state.editor.size);
   const setTileSize = useBoundStore(state => state.editor.setEditorSize);
   const tileCols = useBoundStore(state => state.preview.cols);
@@ -26,6 +15,7 @@ const PreviewForm: React.FC = () => {
   const handleApplySize = () => {
     updateEditor({
       tileSize,
+      chain: true,
     });
   }
 
@@ -38,6 +28,7 @@ const PreviewForm: React.FC = () => {
   const handleApplyCol = () => {
     updatePreview({
       tileCols,
+      chain: true,
     });
   }
   const handleChangeCol = (e: ChangeEvent<HTMLInputElement>) => {
