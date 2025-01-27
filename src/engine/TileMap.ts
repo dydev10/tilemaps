@@ -131,18 +131,6 @@ export default class TileMap {
     console.log('setting at Number', tileNumber, '::', layer);
   }
 
-  saveTileNumbers = (): number[][] => {
-    const savedArray: number[][] = [];
-    for (let row = 0; row < this._rows; row++) {
-      const sCols = [];
-      for (let col = 0; col < this._cols; col++) {
-        sCols.push(this.getTileIndex(col, row) + 1);
-      }
-      savedArray.push(sCols);
-    }
-    return savedArray;
-  }
-
   /**
    * preview
   */

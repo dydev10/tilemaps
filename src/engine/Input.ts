@@ -10,17 +10,25 @@ export type MouseXY = {
 };
 
 export default class Input {
+  focused: boolean;
   keys: string[];
   mouse: MouseXY;
 
   constructor() {
+    this.focused = false;
     this.keys = [];
     this.mouse = { x: 0, y: 0 }
     // add listeners
     this.setup();
   }
+
+  // block/unblock all input reading with focused flag
+  updateFocus = (focus: boolean) => {
+    this.focused = focus;
+  }
   
   onKeyDown = (e: KeyboardEvent) => {
+    if (!this.focused) return;
     const isPressed = this.keys.find((val) => val === e.code);
     if (!isPressed) {
       this.keys = [e.code, ...this.keys];
@@ -28,18 +36,22 @@ export default class Input {
   }
   
   onKeyUp = (e: KeyboardEvent) => {
+    if (!this.focused) return;
     this.keys = this.keys.filter((val) => val !== e.code);    
   }
 
-  onMouseDown = (e: MouseEvent) => {    
+  onMouseDown = (e: MouseEvent) => {
+    if (!this.focused) return;
     this.keys = [MouseButtons[e.button], ...this.keys];
   }
   
   onMouseUp = (e: MouseEvent) => {
+    if (!this.focused) return;
     this.keys = this.keys.filter((val) => val !== MouseButtons[e.button]);
   }
 
   setMouseXY = (point: MouseXY) => {
+    if (!this.focused) return;
     this.mouse = {
       x: point.x,
       y: point.y,

@@ -45,7 +45,7 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
         const { mouseCol, mouseRow } = getMouseTile(mouse, map);
         const curTile = map.getTile(0, mouseCol, mouseRow);
           
-        if (curTile !== tileBrush) {
+        if (curTile && curTile !== tileBrush) {
           setTileBrush(curTile);
         }
       }

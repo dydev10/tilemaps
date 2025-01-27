@@ -16,6 +16,7 @@ const PreviewImage: React.FC = () => {
 
   // ui
   const updatePreviewInput = useBoundStore(state => state.preview.updatePreviewInput);
+  const updatePreviewFocus = useBoundStore(state => state.preview.updatePreviewFocus);
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
@@ -43,11 +44,21 @@ const PreviewImage: React.FC = () => {
     updatePreviewInput({ mouse: { x: mouseX, y: mouseY } });
   }, [updatePreviewInput]);
 
+  const handleMouseEnter = useCallback(() => {
+    updatePreviewFocus(true);
+  }, [updatePreviewFocus]);
+
+  const handleMouseLeave = useCallback(() => {
+    updatePreviewFocus(false);
+  }, [updatePreviewFocus]);
+
   return (
     <div className="preview-image">
       <canvas
         ref={canvasRef}
         onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
         style={{
           border: '1px solid black',
           background: '#ffaaaa',

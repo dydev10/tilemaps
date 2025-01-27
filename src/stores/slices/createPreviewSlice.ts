@@ -12,6 +12,7 @@ export interface PreviewSlice {
     map: TileMap | null,
     setupPreview: (previewWidth: number, previewHeight: number) => void;
     updatePreview: (imageConfig: { tileCols?: number, imageTile?: number, chain?: boolean }) => void;
+    updatePreviewFocus: (focus: boolean) => void;
     updatePreviewInput: (data: { mouse?: Point }) => void;
     setPreviewCols: (cols: number) => void;
     destroyPreview: () => void;
@@ -57,6 +58,9 @@ const createPreviewSlice: StateCreator<BoundStore, [], [], PreviewSlice> = (set,
           get().editor.updateEditor({ tileSize: map.imageTile })
         }
       }
+    },
+    updatePreviewFocus: (focus: boolean) => {
+      get().preview.input?.updateFocus(focus);
     },
     updatePreviewInput: (data: { mouse?: Point }) => {
       const { input } = get().preview;

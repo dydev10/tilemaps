@@ -46,6 +46,7 @@ export interface EditorSlice {
     camera: Camera | null,
     setupEditor: (editorWidth: number, editorHeight: number) => void,
     updateEditor: (imageConfig: { tileSize: number, chain?: boolean }) => void,
+    updateEditorFocus:  (focus: boolean) => void;
     updateEditorInput: (data: { mouse?: Point }) => void,
     updateEditorCamera: (deltaTime: number, speedX: number, speedY: number) => void,
     setEditorSize: (size: number) => void,
@@ -93,6 +94,9 @@ const createEditorSlice: StateCreator<BoundStore, [], [], EditorSlice> = (set, g
       if(chain && previewMap) {
         get().preview.updatePreview({ imageTile: map.imageTile })
       }
+    },
+    updateEditorFocus: (focus: boolean) => {
+      get().editor.input?.updateFocus(focus);
     },
     updateEditorInput: (data: { mouse?: Point }) => {
       const { input } = get().editor;
