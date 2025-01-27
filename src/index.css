@@ -20,7 +20,7 @@ body {
     flex
     place-items-center
     min-w-3xs
-    min-h-dvh
+    h-screen
     bg-gray-900
   ;
 }
@@ -28,11 +28,15 @@ body {
 #root {
   @apply
     bg-gray-800
-    px-8
+    p-8
     mx-auto
     my-0
     max-w-5xl
     text-center
+    justify-center
+    items-center
+    rounded-lg
+    shadow-md
   ;
 }
 
@@ -61,12 +65,13 @@ button:hover {
 .editor-layout {
   @apply
     flex
-    gap-4
-    p-4
-    bg-gray-700
-    min-h-screen
+    gap-8
+    p-8
+    bg-gray-300
     justify-center
     items-center
+    rounded-lg
+    shadow-md
   ;
 }
 
@@ -84,6 +89,10 @@ button:hover {
     flex
     flex-col
     items-center
+    bg-gray-800
+    p-4
+    rounded-lg
+    shadow-md
   ;
 }
 
