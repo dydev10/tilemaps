@@ -3,6 +3,7 @@ import Input from "../../engine/Input";
 import TileMap from "../../engine/TileMap";
 import { Point } from "../../types";
 import { BoundStore } from "../useBoundStore";
+import { DEFAULT_COLS } from "../../helpers/constants";
 
 
 export interface PreviewSlice {
@@ -23,7 +24,7 @@ const createPreviewSlice: StateCreator<BoundStore, [], [], PreviewSlice> = (set,
   preview: {
     input: null,
     map: null,
-    cols: 4,
+    cols: DEFAULT_COLS,
   
     // setup should trigger all state subscriptions, rest should not
     setupPreview: (previewWidth: number, previewHeight: number) => {

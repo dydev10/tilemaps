@@ -5,6 +5,7 @@ import Viewport from "../../engine/Viewport";
 import { Point } from "../../types";
 import TileMap from "../../engine/TileMap";
 import { BoundStore } from "../useBoundStore";
+import { DEFAULT_TILE_SIZE } from "../../helpers/constants";
 
 const sampleEditLayers = [
   [
@@ -58,7 +59,7 @@ const createEditorSlice: StateCreator<BoundStore, [], [], EditorSlice> = (set, g
   editor: {
     input: null,
     map: null,
-    size: 32,
+    size: DEFAULT_TILE_SIZE,
     viewport: null,
     camera: null,
 

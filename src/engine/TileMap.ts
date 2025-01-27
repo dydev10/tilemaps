@@ -1,3 +1,4 @@
+import { DEFAULT_COLS, DEFAULT_TILE_SIZE } from "../helpers/constants";
 
 export type LayerTiles = number[];
 
@@ -19,12 +20,12 @@ export default class TileMap {
   previewHeight?: number;
 
   constructor(layers: number[][], previewWidth?: number, previewHeight?: number) {
-    this._cols = 12;
-    this._rows = 12;
-    this._tileSize = 64;
+    this._cols = DEFAULT_COLS;
+    this._rows = DEFAULT_COLS;
+    this._tileSize = DEFAULT_TILE_SIZE;
 
     this.image = document.getElementById('tilemap-source') as HTMLImageElement;
-    this._imageTile = 32;
+    this._imageTile = DEFAULT_TILE_SIZE;
     this._imageCols = Math.floor(this.image.width / this._imageTile);
     this._imageRows = Math.floor(this.image.height / this._imageTile);
     this.layers = layers;
@@ -32,19 +33,19 @@ export default class TileMap {
     // preview things
     if (previewWidth) {
       this.previewWidth = previewWidth;
-      this._tileSize = (previewWidth / 4); 
-      this._cols = 4;
+      this._cols = DEFAULT_COLS;
+      this._tileSize = (previewWidth / this._cols); 
     }
     if (previewHeight) {
       this.previewHeight = previewHeight;
-      this._tileSize = (previewHeight / 4); 
-      this._rows = 4;
+      this._rows = DEFAULT_COLS;
+      this._tileSize = (previewHeight / this._rows); 
     }
 
     if (layers?.length) {
       this._cols = Math.floor(Math.sqrt(layers[0].length));
       this._rows = Math.floor(Math.sqrt(layers[0].length));
-      this._tileSize = 64;      
+      this._tileSize = DEFAULT_TILE_SIZE;      
     } else {
       this.layers = this.generateLayers();
     }
