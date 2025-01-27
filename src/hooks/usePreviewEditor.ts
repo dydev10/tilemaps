@@ -130,7 +130,7 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
             map.tileSize,
             'black',
             1,
-            0.2,
+            0.1,
           );
         }
       }
