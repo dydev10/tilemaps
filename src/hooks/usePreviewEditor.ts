@@ -60,9 +60,13 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     const { mouse } = input;
     const { offset, startTile, endTile } = viewport;
 
-    const mouseCol = Math.floor((mouse.x) / map.tileSize)  - Math.floor((offset.x + map.tileSize/2) / map.tileSize);
-    const mouseRow = Math.floor((mouse.y) / map.tileSize)  - Math.floor((offset.y + map.tileSize/2)/ map.tileSize);
-    
+    const mouseCol = mouse.x / map.tileSize;
+    const mouseRow = mouse.y / map.tileSize;
+    const offMouseX = viewport.getViewportMouseX(mouseCol);
+    const offMouseY = viewport.getViewportMouseY(mouseRow);
+    const offMouseCol = Math.floor(offMouseX / map.tileSize);
+    const offMouseRow = Math.floor(offMouseY / map.tileSize);
+
     // draw full preview image
     // and NOT fit it in preview size
     drawImage(
@@ -82,7 +86,7 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
         const y = viewport.getViewportY(row);
         
         // hover tile
-        if (mouseCol === col && mouseRow === row) {
+        if (offMouseCol === col && offMouseRow === row) {
           hoveredTile = { col, row };
         }
 

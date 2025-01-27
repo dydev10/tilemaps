@@ -62,4 +62,11 @@ export default class Viewport {
     // return (row - this.startTile.y) * this.map.tileSize + this.offset.y;
     return row * this.map.tileSize + this.offset.y;
   }
+
+  getViewportMouseX = (mouseCol: number): number => {
+    return mouseCol * this.map.tileSize - this.offset.x;
+  }
+  getViewportMouseY = (mouseRow: number): number => {
+    return mouseRow * this.map.tileSize - this.offset.y;
+  }
 }
