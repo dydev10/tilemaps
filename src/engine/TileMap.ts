@@ -7,9 +7,9 @@ export default class TileMap {
   private _rows: number;
   
   image: HTMLImageElement;
-  imageTile: number;
-  imageCols: number;
-  imageRows: number;
+  private _imageTile: number;
+  private _imageCols: number;
+  private _imageRows: number;
 
   // multi layer tileMap data model
   layers: number[][];
@@ -24,16 +24,16 @@ export default class TileMap {
     this._tileSize = 64;
 
     this.image = document.getElementById('tilemap-source') as HTMLImageElement;
-    this.imageTile = 32;
-    this.imageCols = Math.floor(this.image.width / this.imageTile);
-    this.imageRows = Math.floor(this.image.height / this.imageTile);
+    this._imageTile = 32;
+    this._imageCols = Math.floor(this.image.width / this._imageTile);
+    this._imageRows = Math.floor(this.image.height / this._imageTile);
     this.layers = layers;
 
     // preview things
     if (previewWidth) {
       this.previewWidth = previewWidth;
       this._tileSize = (previewWidth / 4); 
-      this._cols = 4; 
+      this._cols = 4;
     }
     if (previewHeight) {
       this.previewHeight = previewHeight;
@@ -72,6 +72,26 @@ export default class TileMap {
     this._rows = rows;
   }
 
+  public get imageTile() {
+    return this._imageTile;
+  }
+  public set imageTile(size: number) {
+    this._imageTile = size;
+  }
+
+  public get imageCols() {
+    return this._imageCols;
+  }
+  public set imageCols(cols: number) {
+    this._imageCols = cols;
+  }
+
+  public get imageRows() {
+    return this._imageRows;
+  }
+  public set imageRows(rows: number) {
+    this._imageRows = rows;
+  }
 
   /**
    * methods
@@ -110,26 +130,21 @@ export default class TileMap {
    * preview
   */
   setPreviewTileSize = (size: number) => {
-    // preview things
-    if (this.previewWidth) {
-      this._cols = (this.previewWidth / size); 
-      this._tileSize = size; ; 
-   }
-   if (this.previewHeight) {
-     this._rows = (this.previewHeight / size);
-     this._tileSize = size; 
-   }
+    console.log('!!! xxxx maybe NOT ALLOWED in preview xxxx');    
   }
   setPreviewTileCols = (cols: number) => {
      // preview things
      if (this.previewWidth) {
       this._tileSize = (this.previewWidth / cols); 
-      this._cols = cols; 
+      this._cols = cols;
     }
     if (this.previewHeight) {
       this._tileSize = (this.previewHeight / cols); 
       this._rows = cols;
     }
+
+    // sync imageTile size to be used in editor
+    this._imageTile = (this.image.width / cols);
   }
 
   
@@ -139,14 +154,14 @@ export default class TileMap {
   setEditorTileSize = (size: number) => {
     this._tileSize = size;
 
-    this.imageTile = size;
-    this.imageCols = Math.floor(this.image.width / this.imageTile);
-    this.imageRows = Math.floor(this.image.height / this.imageTile);
+    this._imageTile = size;
+    this._imageCols = Math.floor(this.image.width / this._imageTile);
+    this._imageRows = Math.floor(this.image.height / this._imageTile);
   }
   setEditorTileCols = (cols: number) => {
-    console.log('!!! xxxx maybe NOT ALLOWED xxxx');
+    console.log('!!! xxxx maybe NOT ALLOWED in preview xxxx');
 
-    // preview things
+    // edit things
      if (this.image.width) {
       this._tileSize = (this.image.width / cols); 
       this._cols = cols; 
