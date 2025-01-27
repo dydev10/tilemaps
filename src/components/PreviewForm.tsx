@@ -78,7 +78,7 @@ const PreviewForm: React.FC = () => {
         <option key={`cols-opt-${7}`} value={7} />
       </datalist>
       <label className="editor-form__label">
-        Cols:
+        Rows:
         <input
           name="imageCols"
           type="range"
