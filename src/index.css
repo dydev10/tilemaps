@@ -70,15 +70,6 @@ button:hover {
   ;
 }
 
-.preview-canvas {
-  @apply
-    border
-    rounded-lg
-    bg-white
-    shadow-md
-  ;
-}
-
 .editor-canvas {
   @apply
     border
@@ -88,12 +79,54 @@ button:hover {
   ;
 }
 
+.editor-tools {
+  @apply
+    flex
+    flex-col
+    items-center
+  ;
+}
+
+.preview-canvas {
+  @apply
+    border
+    rounded-lg
+    bg-white
+    shadow-md
+  ;
+}
+
 .editor-form {
-  @apply flex flex-col justify-center items-center gap-2
+  /* @apply flex flex-col justify-center items-center gap-2 */
+  @apply
+    flex
+    flex-col
+    gap-2
+    mb-2
+  ;
+}
+
+.editor-form__label {
+  @apply
+    flex
+    flex-col
+    items-center
+    text-sm
+    text-zinc-300
+  ;
 }
 
 .editor-form__slider {
   @apply
     w-32
+  ;
+}
+
+.editor-form__value {
+  @apply
+    self-start
+    font-medium
+    text-xs
+    text-emerald-300
   ;
 }

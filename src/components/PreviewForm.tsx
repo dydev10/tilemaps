@@ -55,16 +55,20 @@ const PreviewForm: React.FC = () => {
         <option key={`size-opt-${6}`} value={6} />
         <option key={`size-opt-${7}`} value={7} />
       </datalist>
-      <input
-        name="imageTile"
-        type="range"
-        min={3}
-        max={7}
-        list="size-markers"
-        className="editor-form__slider"
-        value={getBaseLog(tileSize, 2)}
-        onChange={handleChangeSize}
-      />
+      <label className="editor-form__label">
+        TileSize:
+        <input
+          name="imageTile"
+          type="range"
+          min={3}
+          max={7}
+          list="size-markers"
+          className="editor-form__slider"
+          value={getBaseLog(tileSize, 2)}
+          onChange={handleChangeSize}
+        />
+        <span className="editor-form__value">{tileSize}</span>
+      </label>
 
       <datalist id="cols-markers">
         <option key={`cols-opt-${3}`} value={3} />
@@ -73,17 +77,21 @@ const PreviewForm: React.FC = () => {
         <option key={`cols-opt-${6}`} value={6} />
         <option key={`cols-opt-${7}`} value={7} />
       </datalist>
-      <input
-        name="imageCols"
-        type="range"
-        step={1}
-        min={3}
-        max={7}
-        list="cols-markers"
-        className="editor-form__slider"
-        value={getBaseLog(tileCols, 2)}
-        onChange={handleChangeCol}
-      />
+      <label className="editor-form__label">
+        Cols:
+        <input
+          name="imageCols"
+          type="range"
+          step={1}
+          min={3}
+          max={7}
+          list="cols-markers"
+          className="editor-form__slider"
+          value={getBaseLog(tileCols, 2)}
+          onChange={handleChangeCol}
+        />
+        <span className="editor-form__value">{tileCols}</span>
+      </label>
     </div>
   );
 };
