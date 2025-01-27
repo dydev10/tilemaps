@@ -41,7 +41,7 @@ const PreviewForm: React.FC = () => {
   }
   const handleChangeCol = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const cols = getSizeByPower(parseInt(value, 10));
+    const cols = parseInt(value, 10);
     setTileCols(cols);
     handleApplyCols(cols);
   }
@@ -70,24 +70,16 @@ const PreviewForm: React.FC = () => {
         <span className="editor-form__value">{tileSize}</span>
       </label>
 
-      <datalist id="cols-markers">
-        <option key={`cols-opt-${3}`} value={3} />
-        <option key={`cols-opt-${4}`} value={4} />
-        <option key={`cols-opt-${5}`} value={5} />
-        <option key={`cols-opt-${6}`} value={6} />
-        <option key={`cols-opt-${7}`} value={7} />
-      </datalist>
       <label className="editor-form__label">
         Rows:
         <input
           name="imageCols"
           type="range"
           step={1}
-          min={3}
-          max={7}
-          list="cols-markers"
+          min={2}
+          max={128}
           className="editor-form__slider"
-          value={getBaseLog(tileCols, 2)}
+          value={tileCols}
           onChange={handleChangeCol}
         />
         <span className="editor-form__value">{tileCols}</span>
