@@ -57,3 +57,33 @@ button:hover {
     bg-amber-200
   ;
 }
+
+.editor-layout {
+  @apply
+    flex
+    gap-4
+    p-4
+    bg-gray-100
+    min-h-screen
+    justify-center
+    items-center
+  ;
+}
+
+.preview-canvas {
+  @apply
+    border
+    rounded-lg
+    bg-white
+    shadow-md
+  ;
+}
+
+.editor-canvas {
+  @apply
+    border
+    rounded-lg
+    bg-white
+    shadow-md
+  ;
+}

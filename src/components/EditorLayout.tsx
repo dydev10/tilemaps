@@ -10,9 +10,9 @@ import PreviewForm from "./PreviewForm";
 const EditorLayout: React.FC = () => {
   return (
     <div className="editor-layout">
+      <PreviewImage />
       <PreviewForm />
       <PreviewEditor />
-      <PreviewImage />
 
       <img
         alt="Hidden tilemap source img"

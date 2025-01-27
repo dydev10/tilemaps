@@ -54,21 +54,20 @@ const PreviewEditor: React.FC = () => {
     }, [updateEditorFocus]);
 
   return (
-    <div className="preview-image">
-      <canvas
-        ref={canvasRef}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        style={{
-          border: '1px solid black',
-          background: '#ffaaaa',
-          // width: '384px',
-          // height: '384px',
-          imageRendering: 'pixelated',
-        }}
-      />
-    </div>
+    <canvas
+      id="editor-canvas"
+      ref={canvasRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        border: '1px solid black',
+        background: '#ffaaaa',
+        // width: '384px',
+        // height: '384px',
+        imageRendering: 'pixelated',
+      }}
+    />
   );
 };
 
