@@ -2,10 +2,10 @@ import React, { MouseEvent, useCallback, useRef, useState } from "react";
 import usePreviewRenderer from "../hooks/usePreviewRenderer";
 import useBoundStore from "../stores/useBoundStore";
 
-// const PREVIEW_WIDTH = 256;
-// const PREVIEW_HEIGHT = 256;
-const PREVIEW_WIDTH = 512;
-const PREVIEW_HEIGHT = 512;
+const PREVIEW_WIDTH = 256;
+const PREVIEW_HEIGHT = 256;
+// const PREVIEW_WIDTH = 512;
+// const PREVIEW_HEIGHT = 512;
 
 
 

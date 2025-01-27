@@ -4,8 +4,8 @@ import useBoundStore from "../stores/useBoundStore";
 
 // const PREVIEW_WIDTH = 256;
 // const PREVIEW_HEIGHT = 256;
-const PREVIEW_WIDTH = 512;
-const PREVIEW_HEIGHT = 512;
+const EDITOR_WIDTH = 512;
+const EDITOR_HEIGHT = 512;
 // const GAME_WIDTH = 768;
 // const GAME_HEIGHT = 768;
 
@@ -23,12 +23,12 @@ const PreviewEditor: React.FC = () => {
     const canvas = canvasRef.current;
     if (canvas) {
       setCtx(canvas.getContext("2d"));
-      canvas.width = PREVIEW_WIDTH;
-      canvas.height = PREVIEW_HEIGHT;
+      canvas.width = EDITOR_WIDTH;
+      canvas.height = EDITOR_HEIGHT;
     }
   }, []);
 
-  usePreviewEditor(ctx, PREVIEW_WIDTH, PREVIEW_HEIGHT, true);
+  usePreviewEditor(ctx, EDITOR_WIDTH, EDITOR_HEIGHT, true);
 
   const handleMouseMove = useCallback((event: MouseEvent) => {
     const canvas = canvasRef.current;
