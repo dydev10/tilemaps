@@ -175,7 +175,5 @@ export default class TileMap {
     this._imageTile = size;
     this._imageCols = Math.floor(this.image.width / this._imageTile);
     this._imageRows = Math.floor(this.image.height / this._imageTile);
-
-    console.log(this._imageCols);
   }
 }
