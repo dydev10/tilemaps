@@ -127,6 +127,10 @@ export default class TileMap {
   */
   setEditorTileSize = (size: number) => {
     this._tileSize = size;
+
+    this.imageTile = size;
+    this.imageCols = Math.floor(this.image.width / this.imageTile);
+    this.imageRows = Math.floor(this.image.height / this.imageTile);
   }
   setEditorTileCols = (cols: number) => {
     console.log('!!! xxxx maybe NOT ALLOWED xxxx');

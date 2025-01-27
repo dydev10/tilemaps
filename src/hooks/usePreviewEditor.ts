@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import TileMap from "../engine/TileMap";
-import { clearCanvas, drawCircle, drawImage, drawOutline, drawText } from "../helpers/canvas";
+import { clearCanvas, drawCircle, drawImage, drawImageTile, drawOutline, drawText } from "../helpers/canvas";
 import useBoundStore from "../stores/useBoundStore";
 
 function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
@@ -49,7 +49,7 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     const cornerX = x + map.tileSize / 4;
     const cornerY = y +  map.tileSize / 4;
 
-    drawText(ctx, cornerX , cornerY, `${tileNum}`);
+    drawText(ctx, cornerX , cornerY, `${tileNum}`, 'black');
   }
 
   const drawLayer = useCallback((layer: number) => {
@@ -67,17 +67,6 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     const offMouseCol = Math.floor(offMouseX / map.tileSize);
     const offMouseRow = Math.floor(offMouseY / map.tileSize);
 
-    // draw full preview image
-    // and NOT fit it in preview size
-    drawImage(
-      ctx,
-      map.image,
-      offset.x + 0,
-      offset.y + 0,
-      map.cols * map.tileSize,
-      map.rows * map.tileSize,
-    );
-
     // tile grid
     for (let row = startTile.y; row <= endTile.y; row++) {
       for (let col = startTile.x; col <= endTile.x; col++) {
@@ -89,6 +78,22 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
         if (offMouseCol === col && offMouseRow === row) {
           hoveredTile = { col, row };
         }
+
+        // draw image tile
+        drawImageTile(
+          ctx,
+          map.image,
+          x,
+          y,
+          map.tileSize,
+          map.tileSize,
+          {
+            x: ((tile - 1) * map.imageTile) % map.image.width,
+            y: Math.floor((tile - 1) / map.imageCols) * map.imageTile,
+            width: map.imageTile,
+            height: map.imageTile,
+          },
+        );
 
         // draw
         drawTileNumber(ctx, map, x, y, col, row);
@@ -128,7 +133,7 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     if (!ctx) return;
     // setup canvas config
     ctx.imageSmoothingEnabled = false;
-    clearCanvas(ctx, '#ffeeee');
+    clearCanvas(ctx, 'gray');
     
     drawLayer(0);
     // drawLayer(1);
