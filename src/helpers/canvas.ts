@@ -4,6 +4,8 @@
  * dom canvas helper functions to provide declarative canvas shape drawing apis
  */
 
+import { MAX_TEXT_SIZE } from "./constants";
+
 /**
  *  Always call this BEFORE starting draw, NEVER call this for layer draw or shape draw
  * @param ctx 
@@ -50,10 +52,11 @@ export const drawText = (
   y: number,
   text: string | null | undefined = null,
   color: string = 'white',
+  size: number = MAX_TEXT_SIZE,
 ) => {
   if (text?.length) {
     ctx.fillStyle = color;
-    ctx.font = "20px Arial";
+    ctx.font = `${size}px Arial`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(text, x, y);

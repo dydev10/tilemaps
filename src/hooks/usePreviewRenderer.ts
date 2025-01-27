@@ -3,6 +3,7 @@ import TileMap from "../engine/TileMap";
 import { clearCanvas, drawImage, drawOutline, drawText } from "../helpers/canvas";
 import useBoundStore from "../stores/useBoundStore";
 import { MouseButtons, MouseXY } from "../engine/Input";
+import { MAX_TEXT_SIZE } from "../helpers/constants";
 
 function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
@@ -32,7 +33,8 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
     const x = tileCol + map.tileSize / 4;
     const y = tileRow +  map.tileSize / 4;
 
-    drawText(ctx, x , y, `${tileNum}`);
+    const size = Math.min(MAX_TEXT_SIZE, map.tileSize / 2);
+    drawText(ctx, x , y, `${tileNum}`, 'white', size);
   }
 
   const updateControls = useCallback(() => {
