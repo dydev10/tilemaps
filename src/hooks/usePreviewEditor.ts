@@ -120,7 +120,7 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
         );
 
         // draw
-        drawTileNumber(ctx, map, x, y, col, row);
+        // drawTileNumber(ctx, map, x, y, col, row);
         if (showGrid) {
           drawOutline(
             ctx,

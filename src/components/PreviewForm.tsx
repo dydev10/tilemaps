@@ -1,7 +1,6 @@
 import React, { ChangeEvent } from "react";
 import useBoundStore from "../stores/useBoundStore";
 import { getBaseLog } from "../helpers/maths";
-import { DEFAULT_CANVAS_SIZE } from "../helpers/constants";
 
 const PreviewForm: React.FC = () => {
   // controls ui
