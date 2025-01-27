@@ -101,8 +101,8 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
         hoveredTile.row * map.tileSize,
         map.tileSize,
         map.tileSize,
-        '#ffcccc',
-        2
+        '#5ee9b5',
+        4
       );
     }
   }, [ctx, previewHeight, previewWidth, map, input, showGrid]);
