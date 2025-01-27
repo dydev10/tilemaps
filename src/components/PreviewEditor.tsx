@@ -55,7 +55,7 @@ const PreviewEditor: React.FC = () => {
 
   return (
     <canvas
-      id="editor-canvas"
+      className="editor-canvas"
       ref={canvasRef}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}

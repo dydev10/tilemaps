@@ -1,21 +1,16 @@
 import './App.css'
-// import TileCamera from './components/TileCamera'
-import PreviewImage from './components/PreviewImage'
-// import PreviewEditor from './components/PreviewEditor'
 import EditorLayout from './components/EditorLayout'
 
 function App() {
 
   return (
     <>
-      <div className="card">
-        {/* <TileCamera /> */}
-        {/* <PreviewImage /> */}
-        {/* <PreviewEditor /> */}
+      <h1 className="tilemap-title">TileMap Editor</h1>
+      <div className="tilemap-card">
         <EditorLayout />
       </div>
-      <p className="read-the-docs">
-        HTML Canvas + React
+      <p className="tilemap-footer">
+        Canvas + React
       </p>
     </>
   )

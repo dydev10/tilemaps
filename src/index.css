@@ -28,7 +28,8 @@ body {
 #root {
   @apply
     bg-gray-800
-    p-8
+    p-6
+    pb-2
     mx-auto
     my-0
     max-w-5xl
@@ -40,25 +41,27 @@ body {
   ;
 }
 
-button {
+.tilemap-title {
   @apply
-    rounded-md
-    border
-    border-solid
-    border-transparent
-    px-4
-    py-2
+    flex
+    justify-center
+    items-center
+    mb-6
     font-medium
-    text-emerald-300
-    bg-gray-600
-    cursor-pointer
+    text-3xl
+    text-emerald-500
   ;
 }
 
-button:hover {
+.tilemap-footer {
   @apply
-  text-orange-500
-    bg-amber-200
+    mt-2    
+    justify-center
+    items-center
+    font-medium
+    text-xs
+    font-mono
+    text-emerald-500
   ;
 }
 
@@ -67,7 +70,7 @@ button:hover {
     flex
     gap-8
     p-8
-    bg-gray-300
+    bg-emerald-100
     justify-center
     items-center
     rounded-lg
@@ -90,6 +93,18 @@ button:hover {
     flex-col
     items-center
     bg-gray-800
+    pt-4
+    rounded-lg
+    shadow-md
+  ;
+}
+
+.editor-tools__main {
+  @apply
+    flex
+    flex-col
+    items-center
+    bg-gray-600
     p-4
     rounded-lg
     shadow-md

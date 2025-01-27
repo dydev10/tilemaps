@@ -54,7 +54,7 @@ const PreviewImage: React.FC = () => {
 
   return (
     <canvas
-      id="preview-canvas"
+      className="preview-canvas"
       ref={canvasRef}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
