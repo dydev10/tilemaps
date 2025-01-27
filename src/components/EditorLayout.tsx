@@ -12,6 +12,9 @@ const EditorLayout: React.FC = () => {
     <div className="editor-layout">
       <PreviewEditor />
       <div className="editor-tools">
+        <div className="editor-tools__header">
+          <span>Source</span>
+        </div>
         <PreviewForm />
         <div className="editor-tools__main">
           <PreviewImage />

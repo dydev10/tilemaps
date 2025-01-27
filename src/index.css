@@ -83,7 +83,7 @@ body {
     border
     rounded-lg
     bg-white
-    shadow-md
+    shadow-xl
   ;
 }
 
@@ -99,13 +99,31 @@ body {
   ;
 }
 
+.editor-tools__header {
+  @apply
+    flex
+    items-center
+    justify-center
+    w-full
+    p-4
+    mb-2
+    font-semibold
+    text-lg
+    text-white
+    bg-gray-900
+    rounded-lg
+    shadow-md
+  ;
+}
+
 .editor-tools__main {
   @apply
     flex
     flex-col
     items-center
-    bg-gray-600
+    w-full
     p-4
+    bg-gray-600
     rounded-lg
     shadow-md
   ;
@@ -116,7 +134,7 @@ body {
     border
     rounded-lg
     bg-white
-    shadow-md
+    shadow-xl
   ;
 }
 
