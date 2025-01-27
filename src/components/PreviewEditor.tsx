@@ -1,4 +1,4 @@
-import React, { ChangeEvent, MouseEvent, useCallback, useRef, useState } from "react";
+import React, { MouseEvent, useCallback, useRef, useState } from "react";
 import usePreviewEditor from "../hooks/usePreviewEditor";
 import useBoundStore from "../stores/useBoundStore";
 
@@ -16,12 +16,7 @@ const PreviewEditor: React.FC = () => {
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
 
   // ui 
-  const tileSize = useBoundStore(state => state.editor.size);
-  const tileCols = useBoundStore(state => state.editor.cols);
-  const updateEditor = useBoundStore(state => state.editor.updateEditor);
   const updateEditorInput = useBoundStore(state => state.editor.updateEditorInput);
-  const setTileSize = useBoundStore(state => state.editor.setEditorSize);
-  const setTileCols = useBoundStore(state => state.editor.setEditorCols);
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
@@ -33,29 +28,6 @@ const PreviewEditor: React.FC = () => {
   }, []);
 
   usePreviewEditor(ctx, PREVIEW_WIDTH, PREVIEW_HEIGHT, true);
-
-
-  const handleApplySize = () => {
-    updateEditor({
-      tileSize,
-    });
-  }
-
-  const handleChangeSize = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setTileSize(parseInt(value, 10));
-  }
-
-  const handleApplyCol = () => {
-    updateEditor({
-      tileCols,
-    });
-  }
-
-  const handleChangeCol = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    setTileCols(parseInt(value, 10));
-  }
 
   const handleMouseMove = useCallback((event: MouseEvent) => {
     const canvas = canvasRef.current;
@@ -85,24 +57,6 @@ const PreviewEditor: React.FC = () => {
           imageRendering: 'pixelated',
         }}
       />
-      <span>
-        <input
-          name="imageTile"
-          type="number"
-          value={tileSize}
-          onChange={handleChangeSize}
-        />
-        <button onClick={handleApplySize}>Apply size</button>
-      </span>
-      <span>
-        <input
-          name="imageCol"
-          type="number"
-          value={tileCols}
-          onChange={handleChangeCol}
-        />
-        <button onClick={handleApplyCol}>Apply col</button>
-      </span>
     </div>
   );
 };

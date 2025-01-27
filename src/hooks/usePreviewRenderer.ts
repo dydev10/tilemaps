@@ -2,14 +2,15 @@ import { useCallback, useEffect, useRef } from "react";
 import useTileStore from "../stores/useTileStore";
 import TileMap from "../engine/TileMap";
 import { clearCanvas, drawImage, drawOutline, drawText } from "../helpers/canvas";
+import useBoundStore from "../stores/useBoundStore";
 
 function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
   
-  const input = useTileStore(state => state.preview.input);
-  const map = useTileStore(state => state.preview.map);
-  const setupPreview = useTileStore(state => state.setupPreview);
-  const destroyPreview = useTileStore(state => state.destroyPreview);
+  const input = useBoundStore(state => state.preview.input);
+  const map = useBoundStore(state => state.preview.map);
+  const setupPreview = useBoundStore(state => state.preview.setupPreview);
+  const destroyPreview = useBoundStore(state => state.preview.destroyPreview);
 
   const drawTileNumber = (ctx: CanvasRenderingContext2D, map: TileMap, col: number, row: number) => {
     const tileNum = map.getTileIndex(col, row) + 1;
@@ -21,7 +22,7 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
     drawText(ctx, x , y, `${tileNum}`);
   }
 
-  const drawLayer = useCallback((layer: number) => {
+  const drawTiles = useCallback(() => {
     if (!ctx || !map || !input) return;
 
     // Convert to tile coordinates
@@ -43,7 +44,6 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
     // tile grid
     for (let row = 0; row < map.rows; row++) {
       for (let col = 0; col < map.cols; col++) {
-        const tile = map.getTile(layer, col, row);
         // hover tile
         if (mouseCol === col && mouseRow === row) {
           hoveredTile = { col, row };
@@ -83,9 +83,8 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
     ctx.imageSmoothingEnabled = false;
     clearCanvas(ctx, '#ffeeee');
     
-    drawLayer(0);
-    // drawLayer(1);
-  }, [ctx, drawLayer]);
+    drawTiles();
+  }, [ctx, drawTiles]);
 
   const frame = useCallback(() => {
     draw();

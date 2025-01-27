@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import TileMap from "../engine/TileMap";
-import { clearCanvas, drawCircle, drawImage, drawImageTile, drawOutline, drawText } from "../helpers/canvas";
+import { clearCanvas, drawCircle, drawImageTile, drawOutline, drawText } from "../helpers/canvas";
 import useBoundStore from "../stores/useBoundStore";
 import { MouseButtons, MouseXY } from "../engine/Input";
 import Viewport from "../engine/Viewport";

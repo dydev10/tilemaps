@@ -1,29 +1,21 @@
 import { StateCreator } from "zustand";
 import Input from "../../engine/Input";
-import Camera from "../../engine/Camera";
-import Viewport from "../../engine/Viewport";
 import TileMap from "../../engine/TileMap";
+import { Point } from "../../types";
 
-const samplePreviewLayers = [
-  [
-    18, 18,
-    18, 1,
-  ],
-  [
-    0, 0,
-    0, 0,
-  ],
-];
 
 export interface PreviewSlice {
   preview: {
-    size: number,
     cols: number,
     input: Input | null,
     map: TileMap | null,
-    viewport: Viewport | null,
-    camera: Camera | null,
-    setupPreview: (previewWidth: number, previewHeight: number) => void,
+    // viewport: Viewport | null,
+    // camera: Camera | null,
+    setupPreview: (previewWidth: number, previewHeight: number) => void;
+    updatePreview: (imageConfig: { tileSize?: number, tileCols?: number }) => void;
+    updatePreviewInput: (data: { mouse?: Point }) => void;
+    setPreviewCols: (cols: number) => void;
+    destroyPreview: () => void;
   }
 }
 
@@ -31,30 +23,50 @@ const createPreviewSlice: StateCreator<PreviewSlice> = (set, get) => ({
   preview: {
     input: null,
     map: null,
-    size: 32,
     cols: 4,
-    viewport: null,
-    camera: null,
   
+    // setup should trigger all state subscriptions, rest should not
     setupPreview: (previewWidth: number, previewHeight: number) => {
-      const layers = structuredClone(samplePreviewLayers);
       const input = new Input();
-      const map = new TileMap(layers, previewWidth, previewHeight);
-      const viewport = new Viewport(map, previewWidth, previewHeight);
-      const camera = new Camera(map, viewport);
+      const map = new TileMap([], previewWidth, previewHeight);
       set({
         preview: {
           ...get().preview,
           input,
           map,
-          viewport,
-          camera,
-          // size: 32,
-          // cols: 4,
-          size: map.tileSize,
           cols: map.cols,
         }
       });
+    },
+
+    // no subscription triggered, frame updates read/write
+    updatePreview: (imageConfig: { tileSize?: number, tileCols?: number }) => {
+      const { tileCols } = imageConfig;
+      const map = get().preview.map;
+      if (!map) return;
+  
+      if (tileCols) {
+        map.setPreviewTileCols(tileCols);
+      }
+    },
+    updatePreviewInput: (data: { mouse?: Point }) => {
+      const { input } = get().preview;
+      const { mouse } = data;
+      
+      if (input && mouse) {
+        input.setMouseXY(mouse);
+      }
+    },
+    setPreviewCols: (cols: number) => {
+      set({
+        preview: {
+          ...get().preview,
+          cols,
+        }
+      })
+    },
+    destroyPreview: () => {
+      get().preview.input?.destroy();
     },
   }
 });

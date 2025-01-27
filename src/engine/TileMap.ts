@@ -129,9 +129,6 @@ export default class TileMap {
   /**
    * preview
   */
-  setPreviewTileSize = (size: number) => {
-    console.log('!!! xxxx maybe NOT ALLOWED in preview xxxx');    
-  }
   setPreviewTileCols = (cols: number) => {
      // preview things
      if (this.previewWidth) {
@@ -157,18 +154,7 @@ export default class TileMap {
     this._imageTile = size;
     this._imageCols = Math.floor(this.image.width / this._imageTile);
     this._imageRows = Math.floor(this.image.height / this._imageTile);
-  }
-  setEditorTileCols = (cols: number) => {
-    console.log('!!! xxxx maybe NOT ALLOWED in preview xxxx');
 
-    // edit things
-     if (this.image.width) {
-      this._tileSize = (this.image.width / cols); 
-      this._cols = cols; 
-    }
-    if (this.image.height) {
-      this._tileSize = (this.image.height / cols); 
-      this._rows = cols;
-    }
+    console.log(this._imageCols);
   }
 }

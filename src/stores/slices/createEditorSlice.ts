@@ -39,7 +39,6 @@ const sampleEditLayers = [
 export interface EditorSlice {
   editor: {
     size: number,
-    cols: number,
     input: Input | null,
     map: TileMap | null,
     viewport: Viewport | null,
@@ -49,7 +48,6 @@ export interface EditorSlice {
     updateEditorInput: (data: { mouse?: Point }) => void,
     updateEditorCamera: (deltaTime: number, speedX: number, speedY: number) => void,
     setEditorSize: (size: number) => void,
-    setEditorCols: (cols: number) => void,
     destroyEditor: () => void,
   },
 }
@@ -59,7 +57,6 @@ const createEditorSlice: StateCreator<EditorSlice> = (set, get) => ({
     input: null,
     map: null,
     size: 32,
-    cols: 4,
     viewport: null,
     camera: null,
 
@@ -77,26 +74,19 @@ const createEditorSlice: StateCreator<EditorSlice> = (set, get) => ({
           map,
           viewport,
           camera,
-          // size: 32,
-          // cols: 4,
           size: map.tileSize,
-          cols: map.cols,
         }
       });
     },
 
     // no subscription triggered, frame updates read/write
     updateEditor: (imageConfig: { tileSize?: number, tileCols?: number }) => {
-      const { tileSize, tileCols } = imageConfig;
+      const { tileSize } = imageConfig;
       const map = get().editor.map;
       if (!map) return;
   
       if (tileSize) {
         map.setEditorTileSize(tileSize);
-      }
-  
-      if (tileCols) {
-        map.setEditorTileCols(tileCols);
       }
     },
     updateEditorInput: (data: { mouse?: Point }) => {
@@ -117,14 +107,6 @@ const createEditorSlice: StateCreator<EditorSlice> = (set, get) => ({
         editor: {
           ...get().editor,
           size,
-        }
-      });
-    },
-    setEditorCols: (cols: number) => {
-      set({
-        editor: {
-          ...get().editor,
-          cols,
         }
       });
     },
