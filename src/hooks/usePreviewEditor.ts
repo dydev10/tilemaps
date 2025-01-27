@@ -60,9 +60,9 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     const { mouse } = input;
     const { offset, startTile, endTile } = viewport;
 
-    const mouseCol = Math.floor((mouse.x - offset.x) / map.tileSize) - startTile.x;
-    const mouseRow = Math.floor((mouse.y - offset.y) / map.tileSize) - startTile.y;
-
+    const mouseCol = Math.floor((mouse.x) / map.tileSize)  - Math.floor((offset.x + map.tileSize/2) / map.tileSize);
+    const mouseRow = Math.floor((mouse.y) / map.tileSize)  - Math.floor((offset.y + map.tileSize/2)/ map.tileSize);
+    
     // draw full preview image
     // and NOT fit it in preview size
     drawImage(
@@ -78,8 +78,6 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     for (let row = startTile.y; row <= endTile.y; row++) {
       for (let col = startTile.x; col <= endTile.x; col++) {
         const tile = map.getTile(layer, col, row);
-        const offCol = viewport.getViewportCol(col);
-        const offRow = viewport.getViewportRow(row);;
         const x = viewport.getViewportX(col);
         const y = viewport.getViewportY(row);
         
@@ -89,7 +87,7 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
         }
 
         // draw
-        drawTileNumber(ctx, map, x, y, offCol, offRow);
+        drawTileNumber(ctx, map, x, y, col, row);
         if (showGrid) {
           drawOutline(
             ctx,
@@ -103,11 +101,13 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     }
 
     // draw hovered tile on top on everything
-    if (hoveredTile) {      
+    if (hoveredTile) {
+      // console.log('hocer', map.tileSize, map.getTileIndex(hoveredTile.col, hoveredTile.row) + 1);
+          
       drawOutline(
         ctx,
-        offset.x + hoveredTile.col * map.tileSize,
-        offset.y + hoveredTile.row * map.tileSize,
+        viewport.getViewportX(hoveredTile.col),
+        viewport.getViewportY(hoveredTile.row),
         map.tileSize,
         map.tileSize,
         '#ffcccc',
