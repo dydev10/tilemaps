@@ -77,10 +77,21 @@ export default class TileMap {
    * methods
    */
 
-  getTileIndex = (col: number, row: number): number => row * this._cols + col
+  getTileIndex = (col: number, row: number): number => row * this._cols + col;
+  getTileNumber = (col: number, row: number): number => this.getTileIndex(col, row) + 1;
 
   getTile = (layer: number, col: number, row: number): number => {
     return this.layers[layer][row * this._cols + col]
+  }
+
+  setLayerAtTile = (layerTile: number, col: number, row: number, layer: number = 0) => {
+    this.layers[layer][this.getTileIndex(col, row)] = layerTile;
+  }
+  setLayerAtTileIndex = (index: number, layer: number = 0) => {
+    console.log('setting at INDEX', index, '::', layer);
+  }
+  setLayerAtTileNumber = (tileNumber: number, layer: number = 0) => {
+    console.log('setting at Number', tileNumber, '::', layer);
   }
 
   saveTileNumbers = (): number[][] => {

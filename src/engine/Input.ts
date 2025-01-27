@@ -4,7 +4,7 @@ export enum MouseButtons {
   MOUSE_R = 2,  
 }
 
-type MouseXY = {
+export type MouseXY = {
   x: number,
   y: number,
 };

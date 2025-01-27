@@ -2,6 +2,8 @@ import { useCallback, useEffect, useRef } from "react";
 import TileMap from "../engine/TileMap";
 import { clearCanvas, drawCircle, drawImage, drawImageTile, drawOutline, drawText } from "../helpers/canvas";
 import useBoundStore from "../stores/useBoundStore";
+import { MouseButtons, MouseXY } from "../engine/Input";
+import Viewport from "../engine/Viewport";
 
 function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
@@ -13,13 +15,29 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
   const setupEditor = useBoundStore(state => state.editor.setupEditor);
   const moveCamera = useBoundStore(state => state.editor.updateEditorCamera);
   const destroyEditor = useBoundStore(state => state.editor.destroyEditor);  
+  
+  const getOffsetMouse = (mouse: MouseXY, map: TileMap, viewport: Viewport) => {
+    const mouseCol = mouse.x / map.tileSize;
+    const mouseRow = mouse.y / map.tileSize;
+    const offMouseX = viewport.getViewportMouseX(mouseCol);
+    const offMouseY = viewport.getViewportMouseY(mouseRow);
+    const offMouseCol = Math.floor(offMouseX / map.tileSize);
+    const offMouseRow = Math.floor(offMouseY / map.tileSize);
+
+    return {
+      mouseCol: offMouseCol,
+      mouseRow: offMouseRow,
+      mouseX: offMouseX,
+      mouseY: offMouseY,
+    };
+  }
 
   const updateCamera = useCallback((deltaTime: number) => {
-    if (!ctx || !input) return;
+    if (!ctx || !input || !map || !viewport) return;
 
     let speedX = 0;
     let speedY = 0;
-    const { keys } = input;
+    const { keys, mouse } = input;
     
     if (keys.length && keys[0] === 'KeyA') {
       speedX = -1;
@@ -32,10 +50,21 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     }
     if (keys.length && keys[0] === 'KeyS') {
       speedY = 1;
-    }    
+    }
+
+    // typescript enum weirdness, do NOT use MouseButtons.MOUSE_L (=0, we need 'MOUSE_L')
+    if (keys[0] === MouseButtons[MouseButtons.MOUSE_L]) {
+      const { mouseCol, mouseRow } = getOffsetMouse(mouse, map, viewport);
+      const DEBUG_TILE = 3;
+      const curTile = map.getTile(0, mouseCol, mouseRow);
+      
+      if (curTile !== DEBUG_TILE) {
+        map.setLayerAtTile(DEBUG_TILE, mouseCol, mouseRow);
+      }
+    }
 
     moveCamera(deltaTime, speedX, speedY);
-  }, [ctx, input, moveCamera]);
+  }, [ctx, input, map, viewport, moveCamera]);
 
   const drawTileNumber = (
     ctx: CanvasRenderingContext2D,
@@ -58,14 +87,9 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     // Convert to tile coordinates
     let hoveredTile = null;
     const { mouse } = input;
-    const { offset, startTile, endTile } = viewport;
+    const { startTile, endTile } = viewport;
 
-    const mouseCol = mouse.x / map.tileSize;
-    const mouseRow = mouse.y / map.tileSize;
-    const offMouseX = viewport.getViewportMouseX(mouseCol);
-    const offMouseY = viewport.getViewportMouseY(mouseRow);
-    const offMouseCol = Math.floor(offMouseX / map.tileSize);
-    const offMouseRow = Math.floor(offMouseY / map.tileSize);
+    const { mouseCol, mouseRow } = getOffsetMouse(mouse, map, viewport);
 
     // tile grid
     for (let row = startTile.y; row <= endTile.y; row++) {
@@ -75,7 +99,7 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
         const y = viewport.getViewportY(row);
         
         // hover tile
-        if (offMouseCol === col && offMouseRow === row) {
+        if (mouseCol === col && mouseRow === row) {
           hoveredTile = { col, row };
         }
 
