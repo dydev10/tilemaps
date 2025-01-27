@@ -4,6 +4,7 @@ import Camera from "../../engine/Camera";
 import Viewport from "../../engine/Viewport";
 import { Point } from "../../types";
 import TileMap from "../../engine/TileMap";
+import { BoundStore } from "../useBoundStore";
 
 const sampleEditLayers = [
   [
@@ -52,7 +53,7 @@ export interface EditorSlice {
   },
 }
 
-const createEditorSlice: StateCreator<EditorSlice> = (set, get) => ({
+const createEditorSlice: StateCreator<BoundStore, [], [], EditorSlice> = (set, get) => ({
   editor: {
     input: null,
     map: null,

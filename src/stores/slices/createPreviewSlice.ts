@@ -2,6 +2,7 @@ import { StateCreator } from "zustand";
 import Input from "../../engine/Input";
 import TileMap from "../../engine/TileMap";
 import { Point } from "../../types";
+import { BoundStore } from "../useBoundStore";
 
 
 export interface PreviewSlice {
@@ -9,8 +10,6 @@ export interface PreviewSlice {
     cols: number,
     input: Input | null,
     map: TileMap | null,
-    // viewport: Viewport | null,
-    // camera: Camera | null,
     setupPreview: (previewWidth: number, previewHeight: number) => void;
     updatePreview: (imageConfig: { tileSize?: number, tileCols?: number }) => void;
     updatePreviewInput: (data: { mouse?: Point }) => void;
@@ -19,7 +18,7 @@ export interface PreviewSlice {
   }
 }
 
-const createPreviewSlice: StateCreator<PreviewSlice> = (set, get) => ({
+const createPreviewSlice: StateCreator<BoundStore, [], [], PreviewSlice> = (set, get) => ({
   preview: {
     input: null,
     map: null,
@@ -44,7 +43,7 @@ const createPreviewSlice: StateCreator<PreviewSlice> = (set, get) => ({
       const { tileCols } = imageConfig;
       const map = get().preview.map;
       if (!map) return;
-  
+
       if (tileCols) {
         map.setPreviewTileCols(tileCols);
       }
