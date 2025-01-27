@@ -8,7 +8,8 @@ import Viewport from "../engine/Viewport";
 function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
   const prevTimeRef = useRef<number>(0);
-   
+  
+  const tileBrush = useBoundStore(state => state.tileBrush); 
   const input = useBoundStore(state => state.editor.input);
   const map = useBoundStore(state => state.editor.map);
   const viewport = useBoundStore(state => state.editor.viewport);
@@ -55,16 +56,15 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
     // typescript enum weirdness, do NOT use MouseButtons.MOUSE_L (=0, we need 'MOUSE_L')
     if (keys[0] === MouseButtons[MouseButtons.MOUSE_L]) {
       const { mouseCol, mouseRow } = getOffsetMouse(mouse, map, viewport);
-      const DEBUG_TILE = 3;
       const curTile = map.getTile(0, mouseCol, mouseRow);
       
-      if (curTile !== DEBUG_TILE) {
-        map.setLayerAtTile(DEBUG_TILE, mouseCol, mouseRow);
+      if (tileBrush && curTile !== tileBrush) {
+        map.setLayerAtTile(tileBrush, mouseCol, mouseRow);
       }
     }
 
     moveCamera(deltaTime, speedX, speedY);
-  }, [ctx, input, map, viewport, moveCamera]);
+  }, [ctx, input, map, viewport, tileBrush, moveCamera]);
 
   const drawTileNumber = (
     ctx: CanvasRenderingContext2D,

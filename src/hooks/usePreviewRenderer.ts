@@ -2,11 +2,13 @@ import { useCallback, useEffect, useRef } from "react";
 import TileMap from "../engine/TileMap";
 import { clearCanvas, drawImage, drawOutline, drawText } from "../helpers/canvas";
 import useBoundStore from "../stores/useBoundStore";
-import { MouseXY } from "../engine/Input";
+import { MouseButtons, MouseXY } from "../engine/Input";
 
 function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
   
+  const tileBrush = useBoundStore(state => state.tileBrush);
+  const setTileBrush = useBoundStore(state => state.setTileBrush);
   const input = useBoundStore(state => state.preview.input);
   const map = useBoundStore(state => state.preview.map);
   const setupPreview = useBoundStore(state => state.preview.setupPreview);
@@ -32,6 +34,22 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
 
     drawText(ctx, x , y, `${tileNum}`);
   }
+
+  const updateControls = useCallback(() => {
+      if (!ctx || !input || !map) return;
+  
+      const { keys, mouse } = input;
+      
+      // typescript enum weirdness, do NOT use MouseButtons.MOUSE_L (=0, we need 'MOUSE_L')
+      if (keys[0] === MouseButtons[MouseButtons.MOUSE_L]) {
+        const { mouseCol, mouseRow } = getMouseTile(mouse, map);
+        const curTile = map.getTile(0, mouseCol, mouseRow);
+          
+        if (curTile !== tileBrush) {
+          setTileBrush(curTile);
+        }
+      }
+    }, [ctx, input, map, tileBrush, setTileBrush]);
 
   const drawTiles = useCallback(() => {
     if (!ctx || !map || !input) return;
@@ -93,8 +111,9 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
     ctx.imageSmoothingEnabled = false;
     clearCanvas(ctx, '#ffeeee');
     
+    updateControls();
     drawTiles();
-  }, [ctx, drawTiles]);
+  }, [ctx, drawTiles, updateControls]);
 
   const frame = useCallback(() => {
     draw();
