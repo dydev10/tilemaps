@@ -1,9 +1,9 @@
 import { StateCreator } from "zustand";
 import Input from "../../engine/Input";
-import TileMapEdit from "../../engine/TileMapEdit";
 import Camera from "../../engine/Camera";
 import Viewport from "../../engine/Viewport";
 import { Point } from "../../types";
+import TileMap from "../../engine/TileMap";
 
 const sampleEditLayers = [
   [
@@ -41,7 +41,7 @@ export interface EditorSlice {
     size: number,
     cols: number,
     input: Input | null,
-    map: TileMapEdit | null,
+    map: TileMap | null,
     viewport: Viewport | null,
     camera: Camera | null,
     setupEditor: (editorWidth: number, editorHeight: number) => void,
@@ -67,7 +67,7 @@ const createEditorSlice: StateCreator<EditorSlice> = (set, get) => ({
     setupEditor: (editorWidth: number, editorHeight: number) => {
       const layers = structuredClone(sampleEditLayers);
       const input = new Input();
-      const map = new TileMapEdit(layers, editorWidth, editorHeight);
+      const map = new TileMap(layers, editorWidth, editorHeight);
       const viewport = new Viewport(map, editorWidth, editorHeight);
       const camera = new Camera(map, viewport);
       set({

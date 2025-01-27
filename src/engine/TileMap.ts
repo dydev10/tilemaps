@@ -40,6 +40,12 @@ export default class TileMap {
       this._tileSize = (previewHeight / 4); 
       this._rows = 4;
     }
+
+    if (layers?.length) {
+      this._cols = Math.floor(Math.sqrt(layers[0].length));
+      this._rows = Math.floor(Math.sqrt(layers[0].length));
+      this._tileSize = 64;      
+    }
   }
 
   /**
@@ -92,7 +98,6 @@ export default class TileMap {
   /**
    * preview
   */
-
   setPreviewTileSize = (size: number) => {
     // preview things
     if (this.previewWidth) {
@@ -120,20 +125,13 @@ export default class TileMap {
   /**
    * editor
   */
-
   setEditorTileSize = (size: number) => {
-    // preview things
-    if (this.image.width) {
-      this._cols = (this.image.width / size); 
-      this._tileSize = size; ; 
-   }
-   if (this.image.height) {
-     this._rows = (this.image.height / size);
-     this._tileSize = size; 
-   }
- }
+    this._tileSize = size;
+  }
   setEditorTileCols = (cols: number) => {
-     // preview things
+    console.log('!!! xxxx maybe NOT ALLOWED xxxx');
+
+    // preview things
      if (this.image.width) {
       this._tileSize = (this.image.width / cols); 
       this._cols = cols; 
