@@ -8,6 +8,8 @@ import { MAX_TEXT_SIZE } from "../helpers/constants";
 function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
   
+  const isImageReady = useBoundStore(state => state.isImageReady);
+  const imageUrl = useBoundStore(state => state.imageUrl);
   const tileBrush = useBoundStore(state => state.tileBrush);
   const setTileBrush = useBoundStore(state => state.setTileBrush);
   const input = useBoundStore(state => state.preview.input);
@@ -24,7 +26,6 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
       mouseRow,
     };
   }
-  
   
   const drawTileNumber = (ctx: CanvasRenderingContext2D, map: TileMap, col: number, row: number) => {
     const tileNum = map.getTileIndex(col, row) + 1;
@@ -124,12 +125,15 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
   }, [draw]);
 
   useEffect(() => {
-    setupPreview(previewWidth, previewHeight)
+    if (isImageReady && imageUrl) {
+      setupPreview(previewWidth, previewHeight);
+    }
 
     return () => {
       destroyPreview();
     }
-  }, [previewWidth, previewHeight, setupPreview, destroyPreview]);
+  }, [isImageReady, imageUrl, previewWidth, previewHeight, setupPreview, destroyPreview]);
+
 
   // start frame loop
   useEffect(() => {

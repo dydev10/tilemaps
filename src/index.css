@@ -166,9 +166,29 @@ body {
 
 .editor-form__value {
   @apply
-    self-start
-    font-medium
-    text-xs
-    text-emerald-600
+  self-start
+  font-medium
+  text-xs
+  text-emerald-600
+  ;
+}
+
+.editor-form__uploader {
+  @apply
+    flex
+    self-center
+    items-center
+    justify-center
+    w-8
+    h-6
+    rounded-md
+    bg-emerald-800
+    text-gray-300
+    cursor-pointer
+    shadow-md
+    hover:text-gray-100
+    hover:bg-emerald-700
+    transition
+    duration-200
   ;
 }

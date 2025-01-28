@@ -1,9 +1,11 @@
 import React, { ChangeEvent } from "react";
+import { FaFileImage } from "react-icons/fa6";
 import useBoundStore from "../stores/useBoundStore";
 import { getBaseLog, uptoFixed } from "../helpers/maths";
 
 const PreviewForm: React.FC = () => {
   // controls ui
+  const setPreviewImage = useBoundStore(state => state.setPreviewImage);
   const tileSize = useBoundStore(state => state.editor.size);
   const setTileSize = useBoundStore(state => state.editor.setEditorSize);
   const tileCols = useBoundStore(state => state.preview.cols);
@@ -11,6 +13,21 @@ const PreviewForm: React.FC = () => {
   // ????
   const updateEditor = useBoundStore(state => state.editor.updateEditor);
   const updatePreview = useBoundStore(state => state.preview.updatePreview);
+
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        if (e.target?.result) {
+          setPreviewImage(e.target.result as string); // Set the image source in state
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
 
   const getSizeByPower = (pow: number) => {
     return 2**pow;
@@ -84,6 +101,13 @@ const PreviewForm: React.FC = () => {
           onChange={handleChangeCol}
         />
         <span className="editor-form__value">{tileCols}</span>
+      </label>
+      <div className="image-uploader">
+      </div>
+
+      <label className="editor-form__uploader">
+        <input type ="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />
+        <FaFileImage className="editor-form__uploader-icon" />
       </label>
     </div>
   );

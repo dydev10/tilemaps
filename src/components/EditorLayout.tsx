@@ -13,11 +13,12 @@ import useBoundStore from "../stores/useBoundStore";
 const EditorLayout: React.FC = () => {
   const imageRef = useRef<HTMLImageElement>(null);
 
+  const imageUrl = useBoundStore(state => state.imageUrl);
   const updatePreview = useBoundStore(state => state.preview.updatePreview);
 
   useEffect(() => {
     const image = imageRef.current;
-    if (image) {
+    if (imageUrl && image) {
       image.onload = () => {
         updatePreview({
           tileCols: DEFAULT_COLS,
@@ -31,7 +32,7 @@ const EditorLayout: React.FC = () => {
         image.onload = null;
       }
     }
-  }, [updatePreview]);
+  }, [imageUrl, updatePreview]);
 
   return (
     <div className="editor-layout">
@@ -49,7 +50,7 @@ const EditorLayout: React.FC = () => {
       <img
         ref={imageRef}
         alt="Hidden tilemap source img"
-        src={grass}
+        src={imageUrl ?? grass}
         id="tilemap-source"
         style={{
           display: 'none',
