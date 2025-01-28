@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef } from "react";
 import TileMap from "../engine/TileMap";
-import { clearCanvas, drawCircle, drawImageTile, drawOutline } from "../helpers/canvas";
+import { clearCanvas, drawCircle, drawImageTile, drawOutline, drawText } from "../helpers/canvas";
 import useBoundStore from "../stores/useBoundStore";
 import { MouseButtons, MouseXY } from "../engine/Input";
 import Viewport from "../engine/Viewport";
+import { MAX_TEXT_SIZE } from "../helpers/constants";
 
 function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
@@ -31,6 +32,22 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
       mouseX: offMouseX,
       mouseY: offMouseY,
     };
+  }
+
+  const drawTileNumber = (
+    ctx: CanvasRenderingContext2D,
+    map: TileMap,
+    x: number,
+    y: number,
+    col: number,
+    row: number
+  ) => {
+    const tileNum = map.getTileIndex(col, row) + 1;
+    const cornerX = x + map.tileSize / 4;
+    const cornerY = y +  map.tileSize / 4;
+
+    const size = Math.min(MAX_TEXT_SIZE, map.tileSize / 3);
+    drawText(ctx, cornerX , cornerY, `${tileNum}`, 'black', size);
   }
 
   const updateCamera = useCallback((deltaTime: number) => {
@@ -105,7 +122,7 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
         );
 
         // draw
-        // drawTileNumber(ctx, map, x, y, col, row);
+        drawTileNumber(ctx, map, x, y, col, row);
         if (showGrid) {
           drawOutline(
             ctx,
