@@ -172,8 +172,16 @@ body {
   text-emerald-600
   ;
 }
+.editor-form__actions {
+  @apply
+    flex
+    gap-8
+    justify-center
+    items-center
+  ;
+}
 
-.editor-form__uploader {
+.editor-form__button {
   @apply
     flex
     self-center

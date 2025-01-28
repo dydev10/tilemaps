@@ -1,7 +1,8 @@
 import React, { ChangeEvent } from "react";
-import { FaFileImage } from "react-icons/fa6";
+import { FaFileImage, FaPalette } from "react-icons/fa6";
 import useBoundStore from "../stores/useBoundStore";
 import { getBaseLog, uptoFixed } from "../helpers/maths";
+import colorTiles from '../assets/colortiles.png'
 
 const PreviewForm: React.FC = () => {
   // controls ui
@@ -28,6 +29,10 @@ const PreviewForm: React.FC = () => {
     }
   };
 
+
+  const handleColorPalette = () => {
+    setPreviewImage(colorTiles)
+  };
 
   const getSizeByPower = (pow: number) => {
     return 2**pow;
@@ -104,11 +109,15 @@ const PreviewForm: React.FC = () => {
       </label>
       <div className="image-uploader">
       </div>
-
-      <label className="editor-form__uploader">
-        <input type ="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />
-        <FaFileImage className="editor-form__uploader-icon" />
-      </label>
+      <div className="editor-form__actions">
+        <label className="editor-form__button">
+          <input type ="file" accept="image/*" style={{ display: 'none' }} onChange={handleFileChange} />
+          <FaFileImage className="editor-form__uploader-icon" />
+        </label>
+        <button className="editor-form__button" onClick={handleColorPalette}>
+          <FaPalette className="editor-form__palette-icon" />
+        </button>
+      </div>
     </div>
   );
 };
