@@ -1,34 +1,33 @@
 import React, { MouseEvent, useCallback, useRef, useState } from "react";
-import usePreviewEditor from "../hooks/usePreviewEditor";
+import usePreviewRenderer from "../hooks/usePreviewRenderer";
 import useBoundStore from "../stores/useBoundStore";
 
-// const PREVIEW_WIDTH = 256;
-// const PREVIEW_HEIGHT = 256;
-const EDITOR_WIDTH = 512;
-const EDITOR_HEIGHT = 512;
-// const GAME_WIDTH = 768;
-// const GAME_HEIGHT = 768;
+const PREVIEW_WIDTH = 256;
+const PREVIEW_HEIGHT = 256;
+// const PREVIEW_WIDTH = 512;
+// const PREVIEW_HEIGHT = 512;
 
 
 
-const PreviewEditor: React.FC = () => {
+
+const PreviewCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
 
-  // ui 
-  const updateEditorInput = useBoundStore(state => state.editor.updateEditorInput);
-  const updateEditorFocus = useBoundStore(state => state.editor.updateEditorFocus);
+  // ui
+  const updatePreviewInput = useBoundStore(state => state.preview.updatePreviewInput);
+  const updatePreviewFocus = useBoundStore(state => state.preview.updatePreviewFocus);
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
       setCtx(canvas.getContext("2d"));
-      canvas.width = EDITOR_WIDTH;
-      canvas.height = EDITOR_HEIGHT;
+      canvas.width = PREVIEW_WIDTH;
+      canvas.height = PREVIEW_HEIGHT;
     }
   }, []);
 
-  usePreviewEditor(ctx, EDITOR_WIDTH, EDITOR_HEIGHT, true);
+  usePreviewRenderer(ctx, PREVIEW_WIDTH, PREVIEW_HEIGHT, true);
 
   const handleMouseMove = useCallback((event: MouseEvent) => {
     const canvas = canvasRef.current;
@@ -42,20 +41,20 @@ const PreviewEditor: React.FC = () => {
     const mouseX = (event.clientX - rect.left) * scaleX;
     const mouseY = (event.clientY - rect.top) * scaleY;
 
-    updateEditorInput({ mouse: { x: mouseX, y: mouseY } });
-  }, [updateEditorInput]);
+    updatePreviewInput({ mouse: { x: mouseX, y: mouseY } });
+  }, [updatePreviewInput]);
 
   const handleMouseEnter = useCallback(() => {
-    updateEditorFocus(true);
-    }, [updateEditorFocus]);
-  
-    const handleMouseLeave = useCallback(() => {
-      updateEditorFocus(false);
-    }, [updateEditorFocus]);
+    updatePreviewFocus(true);
+  }, [updatePreviewFocus]);
+
+  const handleMouseLeave = useCallback(() => {
+    updatePreviewFocus(false);
+  }, [updatePreviewFocus]);
 
   return (
     <canvas
-      className="editor-canvas"
+      className="preview-canvas"
       ref={canvasRef}
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
@@ -71,4 +70,4 @@ const PreviewEditor: React.FC = () => {
   );
 };
 
-export default PreviewEditor;
+export default PreviewCanvas;

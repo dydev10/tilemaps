@@ -5,7 +5,7 @@ import useBoundStore from "../stores/useBoundStore";
 import { MouseButtons, MouseXY } from "../engine/Input";
 import Viewport from "../engine/Viewport";
 
-function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
+function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
   const prevTimeRef = useRef<number>(0);
   
@@ -183,4 +183,4 @@ function usePreviewEditor(ctx: CanvasRenderingContext2D | null, previewWidth: nu
   return draw;
 }
 
-export default usePreviewEditor;
+export default useEditorRender;

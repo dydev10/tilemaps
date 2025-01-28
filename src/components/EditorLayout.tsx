@@ -3,8 +3,8 @@ import React, { useEffect, useRef } from "react";
 // import worldImage from '../assets/worldtileset.png'
 // import summerPlain from '../assets/summerPlain.png'
 import grass from '../assets/grass.png'
-import PreviewEditor from "./PreviewEditor";
-import PreviewImage from "./PreviewImage";
+import EditorCanvas from "./EditorCanvas";
+import PreviewCanvas from "./PreviewCanvas";
 import PreviewForm from "./PreviewForm";
 import { DEFAULT_COLS } from "../helpers/constants";
 import useBoundStore from "../stores/useBoundStore";
@@ -35,14 +35,14 @@ const EditorLayout: React.FC = () => {
 
   return (
     <div className="editor-layout">
-      <PreviewEditor />
+      <EditorCanvas />
       <div className="editor-tools">
         <div className="editor-tools__header">
           <span>Source</span>
         </div>
         <PreviewForm />
         <div className="editor-tools__main">
-          <PreviewImage />
+          <PreviewCanvas />
         </div>
       </div>
 
