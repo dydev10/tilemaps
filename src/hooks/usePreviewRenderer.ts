@@ -1,15 +1,14 @@
 import { useCallback, useEffect, useRef } from "react";
 import TileMap from "../engine/TileMap";
 import { clearCanvas, drawImage, drawOutline, drawText } from "../helpers/canvas";
-import useBoundStore from "../stores/useBoundStore";
+import useBoundStore, { LoadingState } from "../stores/useBoundStore";
 import { MouseButtons, MouseXY } from "../engine/Input";
 import { MAX_TEXT_SIZE } from "../helpers/constants";
 
 function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: number, previewHeight: number, showGrid: boolean) {
   const frameRef = useRef<number | null>(null);
   
-  const isImageReady = useBoundStore(state => state.isImageReady);
-  const imageUrl = useBoundStore(state => state.imageUrl);
+  const imageStatus = useBoundStore(state => state.imageStatus);
   const tileBrush = useBoundStore(state => state.tileBrush);
   const setTileBrush = useBoundStore(state => state.setTileBrush);
   const input = useBoundStore(state => state.preview.input);
@@ -125,14 +124,14 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
   }, [draw]);
 
   useEffect(() => {
-    if (isImageReady && imageUrl) {
+    if (imageStatus === LoadingState.READY) {
       setupPreview(previewWidth, previewHeight);
     }
 
     return () => {
       destroyPreview();
     }
-  }, [isImageReady, imageUrl, previewWidth, previewHeight, setupPreview, destroyPreview]);
+  }, [imageStatus, previewWidth, previewHeight, setupPreview, destroyPreview]);
 
 
   // start frame loop

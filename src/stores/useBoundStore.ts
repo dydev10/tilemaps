@@ -2,9 +2,16 @@ import { create } from "zustand";
 import createEditorSlice, { EditorSlice } from "./slices/createEditorSlice";
 import createPreviewSlice, { PreviewSlice } from "./slices/createPreviewSlice";
 
+export enum LoadingState {
+  IDLE = 'idle',
+  PENDING = 'pending',
+  READY = 'ready',
+}
+
 export interface BoundStore extends EditorSlice, PreviewSlice {
-  isImageReady: boolean;
+  imageStatus: LoadingState;
   imageUrl: string | null;
+  loadingPreviewImage: () => void;
   setPreviewImage: (url: string) => void;
 
   tileBrush: number | null;
@@ -16,12 +23,17 @@ const useBoundStore = create<BoundStore>((set, get, ...ar) => ({
   ...createPreviewSlice(set, get, ...ar),
 
   // uploaded image
-  isImageReady: false,
+  imageStatus: LoadingState.IDLE,
   imageUrl: null,
+  loadingPreviewImage: () => {
+    set({
+      imageStatus: LoadingState.PENDING,
+    });
+  },
   setPreviewImage: (url: string) => {    
     set({
       imageUrl: url,
-      isImageReady: true,
+      imageStatus: LoadingState.READY,
     });
   },
 

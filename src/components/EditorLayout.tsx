@@ -6,33 +6,12 @@ import grass from '../assets/grass.png'
 import EditorCanvas from "./EditorCanvas";
 import PreviewCanvas from "./PreviewCanvas";
 import PreviewForm from "./PreviewForm";
-import { DEFAULT_COLS } from "../helpers/constants";
 import useBoundStore from "../stores/useBoundStore";
 
 
 const EditorLayout: React.FC = () => {
   const imageRef = useRef<HTMLImageElement>(null);
-
   const imageUrl = useBoundStore(state => state.imageUrl);
-  const updatePreview = useBoundStore(state => state.preview.updatePreview);
-
-  useEffect(() => {
-    const image = imageRef.current;
-    if (imageUrl && image) {
-      image.onload = () => {
-        updatePreview({
-          tileCols: DEFAULT_COLS,
-          chain: true,
-        });
-      }
-    }
-
-    return () => {
-      if(image) {
-        image.onload = null;
-      }
-    }
-  }, [imageUrl, updatePreview]);
 
   return (
     <div className="editor-layout">

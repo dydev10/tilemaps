@@ -38,6 +38,10 @@ const createPreviewSlice: StateCreator<BoundStore, [], [], PreviewSlice> = (set,
           cols: map.cols,
         }
       });
+      get().preview.updatePreview({
+        tileCols: map.cols,
+        chain: true,
+      });
     },
 
     // no subscription triggered, frame updates read/write

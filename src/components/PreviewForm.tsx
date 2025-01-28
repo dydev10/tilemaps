@@ -6,6 +6,7 @@ import colorTiles from '../assets/colortiles.png'
 
 const PreviewForm: React.FC = () => {
   // controls ui
+  const loadingPreviewImage = useBoundStore(state => state.loadingPreviewImage);
   const setPreviewImage = useBoundStore(state => state.setPreviewImage);
   const tileSize = useBoundStore(state => state.editor.size);
   const setTileSize = useBoundStore(state => state.editor.setEditorSize);
@@ -18,6 +19,10 @@ const PreviewForm: React.FC = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
+    
+    // call loading action to reset status and trigger re-renders
+    loadingPreviewImage();
+    
     if (file) {
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
