@@ -54,7 +54,8 @@ export const drawText = (
   {
     color = 'white',
     size = MAX_TEXT_SIZE,
-  }: { color: string, size: number },
+    opacity = 1,
+  }: { color?: string, size?: number, opacity?: number, },
 ) => {
   if (text?.length) {
     ctx.fillStyle = color;
