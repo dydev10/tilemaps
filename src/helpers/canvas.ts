@@ -58,11 +58,13 @@ export const drawText = (
   }: { color?: string, size?: number, opacity?: number, },
 ) => {
   if (text?.length) {
+    ctx.globalAlpha = opacity;
     ctx.fillStyle = color;
     ctx.font = `${size}px Arial`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(text, x, y);
+    ctx.globalAlpha = 1;
   }
 };
 
