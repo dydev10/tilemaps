@@ -1,4 +1,5 @@
 import { DEFAULT_COLS, DEFAULT_TILE_SIZE } from "../helpers/constants";
+import { GridPoint } from "../types";
 
 export type LayerTiles = number[];
 
@@ -15,6 +16,9 @@ export default class TileMap {
   // multi layer tileMap data model
   layers: number[][];
 
+  // save helper props
+  trimTile: GridPoint;
+
   //preview stuff
   previewWidth?: number;
   previewHeight?: number;
@@ -30,6 +34,7 @@ export default class TileMap {
     this._imageRows = Math.floor(this.image.height / this._imageTile);
     
     this.layers = layers;
+    this.trimTile = { col: 0, row: 0 };
 
     // preview things
     if (previewWidth) {
@@ -150,12 +155,26 @@ export default class TileMap {
 
   setLayerAtTile = (layerTile: number, col: number, row: number, layer: number = 0) => {
     this.layers[layer][this.getTileIndex(col, row)] = layerTile;
+    // update trim tile
+    if (col > this.trimTile.col) {
+      this.setTrimCol(col)
+    }
+    if (row > this.trimTile.row) {
+      this.setTrimRow(row)
+    }    
   }
   setLayerAtTileIndex = (index: number, layer: number = 0) => {
     console.log('setting at INDEX', index, '::', layer);
   }
   setLayerAtTileNumber = (tileNumber: number, layer: number = 0) => {
     console.log('setting at Number', tileNumber, '::', layer);
+  }
+
+  setTrimCol = (col: number) => {
+    this.trimTile.col = col;
+  }
+  setTrimRow = (row: number) => {
+    this.trimTile.row = row;
   }
 
   /**
