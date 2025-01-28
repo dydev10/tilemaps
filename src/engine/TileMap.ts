@@ -28,6 +28,7 @@ export default class TileMap {
     this._imageTile = DEFAULT_TILE_SIZE;
     this._imageCols = Math.floor(this.image.width / this._imageTile);
     this._imageRows = Math.floor(this.image.height / this._imageTile);
+    
     this.layers = layers;
 
     // preview things
@@ -199,6 +200,16 @@ export default class TileMap {
     this._tileSize = size;
 
     this._imageTile = size;
+    this._imageCols = Math.floor(this.image.width / this._imageTile);
+    this._imageRows = Math.floor(this.image.height / this._imageTile);
+  }
+
+  /**
+   * image
+   */
+  syncImage = () => {
+    this.image = document.getElementById('tilemap-source') as HTMLImageElement;
+    this._imageTile = (this.image.width / this._cols);
     this._imageCols = Math.floor(this.image.width / this._imageTile);
     this._imageRows = Math.floor(this.image.height / this._imageTile);
   }
