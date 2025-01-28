@@ -207,7 +207,7 @@ export default class TileMap {
   /**
    * image
    */
-  syncImage = () => {
+  syncPreviewImage = () => {
     this.image = document.getElementById('tilemap-source') as HTMLImageElement;
     this._imageTile = (this.image.width / this._cols);
     this._imageCols = Math.floor(this.image.width / this._imageTile);
