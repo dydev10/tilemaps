@@ -14,6 +14,7 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
   const input = useBoundStore(state => state.preview.input);
   const map = useBoundStore(state => state.preview.map);
   const setupPreview = useBoundStore(state => state.preview.setupPreview);
+  const updatePreviewImage = useBoundStore(state => state.preview.updatePreviewImage);
   const destroyPreview = useBoundStore(state => state.preview.destroyPreview);
 
   const getMouseTile = (mouse: MouseXY, map: TileMap) => {
@@ -124,15 +125,19 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
   }, [draw]);
 
   useEffect(() => {
-    if (imageStatus === LoadingState.READY) {
-      setupPreview(previewWidth, previewHeight);
-    }
+    setupPreview(previewWidth, previewHeight);
 
     return () => {
       destroyPreview();
     }
-  }, [imageStatus, previewWidth, previewHeight, setupPreview, destroyPreview]);
+  }, [previewWidth, previewHeight, setupPreview, destroyPreview]);
 
+
+  useEffect(() => {
+    if (imageStatus === LoadingState.READY) {
+      updatePreviewImage();
+    }
+  }, [imageStatus, updatePreviewImage]);
 
   // start frame loop
   useEffect(() => {

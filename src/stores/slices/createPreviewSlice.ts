@@ -2,7 +2,7 @@ import { StateCreator } from "zustand";
 import Input from "../../engine/Input";
 import TileMap from "../../engine/TileMap";
 import { Point } from "../../types";
-import { BoundStore } from "../useBoundStore";
+import { BoundStore, LoadingState } from "../useBoundStore";
 import { DEFAULT_COLS } from "../../helpers/constants";
 
 
@@ -12,6 +12,7 @@ export interface PreviewSlice {
     input: Input | null,
     map: TileMap | null,
     setupPreview: (previewWidth: number, previewHeight: number) => void;
+    updatePreviewImage: () => void;
     updatePreview: (imageConfig: { tileCols?: number, imageTile?: number, chain?: boolean }) => void;
     updatePreviewFocus: (focus: boolean) => void;
     updatePreviewInput: (data: { mouse?: Point }) => void;
@@ -40,6 +41,17 @@ const createPreviewSlice: StateCreator<BoundStore, [], [], PreviewSlice> = (set,
       });
       get().preview.updatePreview({
         tileCols: map.cols,
+        chain: true,
+      });
+    },
+
+    updatePreviewImage: () => {
+      get().preview.map?.syncPreviewImage();
+      set({
+        imageStatus: LoadingState.IDLE,
+      });
+      get().preview.updatePreview({
+        tileCols: get().preview.map?.cols,
         chain: true,
       });
     },
