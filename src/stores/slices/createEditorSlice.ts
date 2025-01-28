@@ -23,6 +23,7 @@ export interface EditorSlice {
     updateEditorCamera: (deltaTime: number, speedX: number, speedY: number) => void,
     updateEditorScroll: (deltaY: number, shiftKey: boolean) => void,
     setEditorSize: (size: number) => void,
+    downloadEditorImage: () => void,
     destroyEditor: () => void,
   },
 }
@@ -105,6 +106,10 @@ const createEditorSlice: StateCreator<BoundStore, [], [], EditorSlice> = (set, g
           size,
         }
       });
+    },
+    downloadEditorImage: () => {
+      console.log('trying download ... ');
+      
     },
     destroyEditor: () => {
       get().editor?.input?.destroy();
