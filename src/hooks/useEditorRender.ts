@@ -47,7 +47,7 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
     const cornerY = y +  map.tileSize / 4;
 
     const size = Math.min(MAX_TEXT_SIZE, map.tileSize / 3);
-    drawText(ctx, cornerX , cornerY, `${tileNum}`, 'black', size);
+    drawText(ctx, cornerX , cornerY, `${tileNum}`, { size, color: 'black' });
   }
 
   const updateCamera = useCallback((deltaTime: number) => {

@@ -51,8 +51,10 @@ export const drawText = (
   x: number,
   y: number,
   text: string | null | undefined = null,
-  color: string = 'white',
-  size: number = MAX_TEXT_SIZE,
+  {
+    color = 'white',
+    size = MAX_TEXT_SIZE,
+  }: { color: string, size: number },
 ) => {
   if (text?.length) {
     ctx.fillStyle = color;

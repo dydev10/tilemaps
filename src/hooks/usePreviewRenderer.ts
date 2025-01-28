@@ -34,7 +34,7 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
     const y = tileRow +  map.tileSize / 4;
 
     const size = Math.min(MAX_TEXT_SIZE, map.tileSize / 3);
-    drawText(ctx, x , y, `${tileNum}`, 'white', size);
+    drawText(ctx, x , y, `${tileNum}`, { size, color: 'white' });
   }
 
   const updateControls = useCallback(() => {
