@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 // import layerImage from '../assets/tilemap1layer.png'
 // import worldImage from '../assets/worldtileset.png'
 // import summerPlain from '../assets/summerPlain.png'

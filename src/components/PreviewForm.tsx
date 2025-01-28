@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from "react";
-import { FaDownload, FaFileImage, FaPalette } from "react-icons/fa6";
+import { FaFileImage, FaPalette } from "react-icons/fa6";
 import useBoundStore from "../stores/useBoundStore";
 import { getBaseLog, uptoFixed } from "../helpers/maths";
 import colorTiles from '../assets/colortiles.png'
@@ -15,7 +15,7 @@ const PreviewForm: React.FC = () => {
   // ????
   const updateEditor = useBoundStore(state => state.editor.updateEditor);
   const updatePreview = useBoundStore(state => state.preview.updatePreview);
-  const downloadEditorImage = useBoundStore(state => state.editor.downloadEditorImage);
+  // const downloadEditorImage = useBoundStore(state => state.editor.downloadEditorImage);
 
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,10 +38,10 @@ const PreviewForm: React.FC = () => {
   const handleColorPalette = () => {
     setPreviewImage(colorTiles)
   };
-  
-  const handleDownload = () => {
-    downloadEditorImage();
-  };
+
+  // const handleDownload = () => {
+  //   downloadEditorImage();
+  // };
 
 
   const getSizeByPower = (pow: number) => {
@@ -127,9 +127,9 @@ const PreviewForm: React.FC = () => {
         <button className="editor-form__button" onClick={handleColorPalette}>
           <FaPalette className="editor-form__palette-icon" />
         </button>
-        <button className="editor-form__button" onClick={handleDownload}>
+        {/* <button className="editor-form__button" onClick={handleDownload}>
           <FaDownload className="editor-form__download-icon" />
-        </button>
+        </button> */}
       </div>
     </div>
   );
