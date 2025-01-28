@@ -180,12 +180,13 @@ export default class TileMap {
   }
 
   setPreviewImageTile = (imageTile: number) => {
+    this._imageTile = imageTile;
     if (this.previewWidth) {
-      this._cols = Math.floor(this.image.width / imageTile);
+      this._cols = Math.floor(this.image.width / this._imageTile);
       this._tileSize = (this.previewWidth / this._cols); 
     }
     if (this.previewHeight) {
-      this._rows = Math.floor(this.image.height / imageTile);
+      this._rows = Math.floor(this.image.height / this._imageTile);
       this._tileSize = (this.previewHeight / this._rows); 
     }
     // generate new tilemap
@@ -209,8 +210,7 @@ export default class TileMap {
    */
   syncPreviewImage = () => {
     this.image = document.getElementById('tilemap-source') as HTMLImageElement;
-    this._imageTile = (this.image.width / this._cols);
-    this._imageCols = Math.floor(this.image.width / this._imageTile);
-    this._imageRows = Math.floor(this.image.height / this._imageTile);
+    const newTile = this.image.width / this._cols;
+    this.setPreviewImageTile(newTile);
   }
 }
