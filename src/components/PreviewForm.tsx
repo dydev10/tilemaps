@@ -77,7 +77,7 @@ const PreviewForm: React.FC = () => {
           type="range"
           step={1}
           min={2}
-          max={128}
+          max={32}
           className="editor-form__slider"
           value={tileCols}
           onChange={handleChangeCol}
