@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from "react";
 import useBoundStore from "../stores/useBoundStore";
-import { getBaseLog } from "../helpers/maths";
+import { getBaseLog, uptoFixed } from "../helpers/maths";
 
 const PreviewForm: React.FC = () => {
   // controls ui
@@ -60,6 +60,7 @@ const PreviewForm: React.FC = () => {
         <input
           name="imageTile"
           type="range"
+          step={0.01}
           min={3}
           max={7}
           list="size-markers"
@@ -67,7 +68,7 @@ const PreviewForm: React.FC = () => {
           value={getBaseLog(tileSize, 2)}
           onChange={handleChangeSize}
         />
-        <span className="editor-form__value">{tileSize}</span>
+        <span className="editor-form__value">{uptoFixed(tileSize, 2)}</span>
       </label>
 
       <label className="editor-form__label">
