@@ -73,7 +73,7 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
     // typescript enum weirdness, do NOT use MouseButtons.MOUSE_L (=0, we need 'MOUSE_L')
     if (keys[0] === MouseButtons[MouseButtons.MOUSE_L]) {
       const { mouseCol, mouseRow } = getOffsetMouse(mouse, map, viewport);
-      const curTile = map.getTile(0, mouseCol, mouseRow);
+      const curTile = map.getTile(mouseCol, mouseRow, 0);
       
       if (tileBrush && curTile !== tileBrush) {
         map.setLayerAtTile(tileBrush, mouseCol, mouseRow);
@@ -96,7 +96,7 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
     // tile grid
     for (let row = startTile.y; row <= endTile.y; row++) {
       for (let col = startTile.x; col <= endTile.x; col++) {
-        const tile = map.getTile(layer, col, row);
+        const tile = map.getTile(col, row, layer);
         const x = viewport.getViewportX(col);
         const y = viewport.getViewportY(row);
         

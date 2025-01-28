@@ -45,7 +45,7 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
       // typescript enum weirdness, do NOT use MouseButtons.MOUSE_L (=0, we need 'MOUSE_L')
       if (keys[0] === MouseButtons[MouseButtons.MOUSE_L]) {
         const { mouseCol, mouseRow } = getMouseTile(mouse, map);
-        const curTile = map.getTile(0, mouseCol, mouseRow);
+        const curTile = map.getTile(mouseCol, mouseRow, 0);
           
         if (curTile && curTile !== tileBrush) {
           setTileBrush(curTile);

@@ -47,7 +47,7 @@ export default class TileMap {
       this._rows = Math.floor(Math.sqrt(layers[0].length));
       this._tileSize = DEFAULT_TILE_SIZE;      
     } else {
-      this.layers = this.generateLayers();
+      this.layers = TileMap.generate(this._cols, this._rows, 1, null, this.getTileNumber);
     }
   }
 
@@ -97,6 +97,31 @@ export default class TileMap {
   }
 
   /**
+   * static helpers
+   */
+
+  static generate = (cols: number, rows: number, layerCount: number = 1, fill: number | null = 0, fillFn?: (layer: number, col: number, row: number) => number) => {
+    const layers: number[][] = [];
+    for (let layerIndex = 0; layerIndex < layerCount; layerIndex++) {
+      const layer: number[] = [];      
+      for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+          if (fillFn) {
+            layer.push(fillFn(col, row, layerIndex));
+          } else {
+            layer.push(fill ?? 0);
+          }
+        }
+      }
+      layers.push(layer);
+    }
+    return layers;
+  }
+
+  static getTileI = () => (col: number, row: number, totalCols: number): number => row * totalCols + col;
+  static getTileN = (col: number, row: number, totalCols: number): number => TileMap.getTileN(col, row, totalCols) + 1;
+
+  /**
    * methods
    */
 
@@ -118,7 +143,7 @@ export default class TileMap {
   getTileIndex = (col: number, row: number): number => row * this._cols + col;
   getTileNumber = (col: number, row: number): number => this.getTileIndex(col, row) + 1;
 
-  getTile = (layer: number, col: number, row: number): number => {
+  getTile = (col: number, row: number, layer: number = 0): number => {    
     return this.layers[layer][row * this._cols + col]
   }
 
@@ -150,7 +175,7 @@ export default class TileMap {
     this._imageTile = (this.image.width / cols);
 
     // generate new tilemap
-    this.layers = this.generateLayers();
+    this.layers = TileMap.generate(this._cols, this._rows, 1, null, this.getTileNumber);
   }
 
   setPreviewImageTile = (imageTile: number) => {
@@ -163,7 +188,7 @@ export default class TileMap {
       this._tileSize = (this.previewHeight / this._rows); 
     }
     // generate new tilemap
-    this.layers = this.generateLayers();
+    this.layers = TileMap.generate(this._cols, this._rows, 1, null, this.getTileNumber);
   }
 
   
