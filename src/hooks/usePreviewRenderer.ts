@@ -33,7 +33,7 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
     const x = tileCol + map.tileSize / 4;
     const y = tileRow +  map.tileSize / 4;
 
-    const size = Math.min(MAX_TEXT_SIZE, map.tileSize / 2);
+    const size = Math.min(MAX_TEXT_SIZE, map.tileSize / 3);
     drawText(ctx, x , y, `${tileNum}`, 'white', size);
   }
 
