@@ -61,6 +61,7 @@ const createEditorSlice: StateCreator<BoundStore, [], [], EditorSlice> = (set, g
       if (!map) return;
   
       map.setEditorTileSize(tileSize);
+      get().editor.setEditorSize(tileSize);
 
       // update the preview which can not control its cols
       if(chain && previewMap) {

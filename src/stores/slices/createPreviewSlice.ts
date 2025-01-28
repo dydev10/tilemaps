@@ -50,10 +50,12 @@ const createPreviewSlice: StateCreator<BoundStore, [], [], PreviewSlice> = (set,
       // received imageTile from chain
       if (imageTile) {
         map.setPreviewImageTile(imageTile);
+        get().preview.setPreviewCols(map.cols);
       }
       
       if (tileCols) {
         map.setPreviewTileCols(tileCols);
+        get().preview.setPreviewCols(tileCols);
         // update the editor which can not control its own imageTile
         if(chain && editorMap) {
           get().editor.updateEditor({ tileSize: map.imageTile })
