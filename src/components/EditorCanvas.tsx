@@ -17,6 +17,7 @@ const EditorCanvas: React.FC = () => {
 
   // ui 
   const updateEditorInput = useBoundStore(state => state.editor.updateEditorInput);
+  const updateEditorScroll = useBoundStore(state => state.editor.updateEditorScroll);
   const updateEditorFocus = useBoundStore(state => state.editor.updateEditorFocus);
 
   React.useEffect(() => {
@@ -49,9 +50,18 @@ const EditorCanvas: React.FC = () => {
     updateEditorFocus(true);
     }, [updateEditorFocus]);
   
-    const handleMouseLeave = useCallback(() => {
-      updateEditorFocus(false);
-    }, [updateEditorFocus]);
+  const handleMouseLeave = useCallback(() => {
+    updateEditorFocus(false);
+  }, [updateEditorFocus]);
+
+  const handleMouseScroll = useCallback((e: WheelEvent) => {
+    /**
+     * wheel event not supported in safari.
+     * use WASD in safari for all scroll things
+     */
+    const  { deltaY, shiftKey } = e;
+    updateEditorScroll(deltaY, shiftKey);
+  }, [updateEditorScroll]);
 
   return (
     <canvas
@@ -60,6 +70,7 @@ const EditorCanvas: React.FC = () => {
       onMouseMove={handleMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onWheel={handleMouseScroll}
       style={{
         border: '1px solid black',
         background: '#ffaaaa',

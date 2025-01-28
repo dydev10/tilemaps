@@ -21,6 +21,7 @@ export interface EditorSlice {
     updateEditorFocus:  (focus: boolean) => void;
     updateEditorInput: (data: { mouse?: Point }) => void,
     updateEditorCamera: (deltaTime: number, speedX: number, speedY: number) => void,
+    updateEditorScroll: (deltaY: number, shiftKey: boolean) => void,
     setEditorSize: (size: number) => void,
     destroyEditor: () => void,
   },
@@ -73,16 +74,29 @@ const createEditorSlice: StateCreator<BoundStore, [], [], EditorSlice> = (set, g
     },
     updateEditorInput: (data: { mouse?: Point }) => {
       const { input } = get().editor;
+      if (!input) return;
+      
       const { mouse } = data;
       
-      if (input && mouse) {
+      if (mouse) {
         input.setMouseXY(mouse);
       }
     },
     updateEditorCamera: (deltaTime: number, speedX: number, speedY: number) => {
-      // console.log(deltaTime, speedX, speedY);
       const { camera } = get().editor;
       camera?.move(deltaTime, speedX, speedY);    
+    },
+    updateEditorScroll: (deltaY: number, shiftKey: boolean) => {
+      const { camera } = get().editor;
+      let speedX = 0;
+      let speedY = 0;
+      const speed = Math.round(deltaY / 100);
+      if (shiftKey) {
+        speedX = speed;
+      } else {
+        speedY = speed;
+      }
+      camera?.move(0.1, speedX, speedY);    
     },
     setEditorSize: (size: number) => {
       set({
