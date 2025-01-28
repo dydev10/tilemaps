@@ -1,4 +1,4 @@
-import React, { MouseEvent, useCallback, useRef, useState } from "react";
+import React, { MouseEvent, useCallback, useRef, useState, WheelEvent } from "react";
 import useEditorRender from "../hooks/useEditorRender";
 import useBoundStore from "../stores/useBoundStore";
 
