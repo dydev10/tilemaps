@@ -85,16 +85,11 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
   }, [ctx, input, map, viewport, tileBrush, moveCamera]);
 
   const drawLayer = useCallback((layer: number) => {
-    if (!ctx || !map || !input || !viewport) return;
+    if (!ctx || !map || !viewport) return;
 
-    // Convert to tile coordinates
-    let hoveredTile = null;
-    const { mouse } = input;
     const { startTile, endTile } = viewport;
     const endCol = Math.min(endTile.x, map.layers[layer].length / map.rows);
     const endRow = Math.min(endTile.y, map.layers[layer].length / map.cols);
-
-    const { mouseCol, mouseRow } = getOffsetMouse(mouse, map, viewport);
 
     // tile grid
     for (let row = startTile.y; row <= endRow; row++) {
@@ -102,11 +97,6 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
         const tile = map.getTile(col, row, layer);
         const x = viewport.getViewportX(col);
         const y = viewport.getViewportY(row);
-        
-        // hover tile
-        if (input.focused && mouseCol === col && mouseRow === row) {
-          hoveredTile = { col, row };
-        }
 
         // draw image tile
         drawImageTile(
@@ -123,6 +113,32 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
             height: map.imageTile,
           },
         );
+      }
+    }
+  }, [ctx, map, viewport]);
+
+  const drawOverlays = useCallback(() => {
+    if (!ctx || !map || !input || !viewport) return;
+
+    // Convert to tile coordinates
+    let hoveredTile = null;
+    const { mouse } = input;
+    const { startTile, endTile } = viewport;
+    const endCol = Math.min(endTile.x, map.layers[0].length / map.rows);
+    const endRow = Math.min(endTile.y, map.layers[0].length / map.cols);
+
+    const { mouseCol, mouseRow } = getOffsetMouse(mouse, map, viewport);
+
+    // tile grid
+    for (let row = startTile.y; row <= endRow; row++) {
+      for (let col = startTile.x; col <= endCol; col++) {
+        const x = viewport.getViewportX(col);
+        const y = viewport.getViewportY(row);
+        
+        // hover tile
+        if (input.focused && mouseCol === col && mouseRow === row) {
+          hoveredTile = { col, row };
+        }
 
         // draw
         drawTileNumber(ctx, map, x, y, col, row);
@@ -142,9 +158,7 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
     }
 
     // draw hovered tile on top on everything
-    if (hoveredTile) {
-      // console.log('hocer', map.tileSize, map.getTileIndex(hoveredTile.col, hoveredTile.row) + 1);
-          
+    if (hoveredTile) {          
       drawOutline(
         ctx,
         viewport.getViewportX(hoveredTile.col),
@@ -162,16 +176,24 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
     }
 
   }, [ctx, input, map, viewport, showGrid]);
+
+  const drawAllLayers = useCallback(() => {
+    if  (map) {
+      map.layers.forEach((_, i) => {
+        drawLayer(i);
+      });
+    }
+  }, [map, drawLayer]);
   
   const draw = useCallback(() => {
-    if (!ctx) return;
+    if (!ctx || !map) return;
     // setup canvas config
     ctx.imageSmoothingEnabled = false;
     clearCanvas(ctx, 'gray');
     
-    drawLayer(0);
-    // drawLayer(1);
-  }, [ctx, drawLayer]);
+    drawAllLayers();
+    drawOverlays();
+  }, [ctx, map, drawAllLayers, drawOverlays]);
 
   const frame = useCallback((time: DOMHighResTimeStamp) => {
     const deltaTime = (time - prevTimeRef.current) / 1000; 

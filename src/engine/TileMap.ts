@@ -221,7 +221,7 @@ export default class TileMap {
   setEditorResolution = (resolution: number) => {
     const newCols = resolution / this.tileSize;
     const newRows = resolution / this.tileSize;
-    this.layers = TileMap.generate(newCols, newRows, 1, null, this.getTile);
+    this.layers = TileMap.generate(newCols, newRows, this.layers.length, null, this.getTile);
     
     // modify size after copying layers to new size
     this._cols = newCols;
