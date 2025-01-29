@@ -45,8 +45,9 @@ function useExportRender(ctx: CanvasRenderingContext2D | null) {
       ctx.canvas.width = tileSize * map.cols;
       ctx.canvas.height = tileSize * map.rows;
       
-      drawLayer(0);
-      // drawLayer(1);
+      map.layers.forEach((_, i) => {
+        drawLayer(i);
+      });
     }    
   }, [ctx, drawLayer, tileSize, map]);
 
