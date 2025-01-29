@@ -200,3 +200,99 @@ body {
     duration-200
   ;
 }
+
+.modal {
+  @apply
+    fixed
+    inset-0
+    bg-black/70
+    flex
+    items-center
+    justify-center
+    z-50
+  ;
+}
+
+.modal__dialog {
+  @apply
+    bg-white
+    w-full
+    h-full
+    md:w-4/5
+    md:h-4/5
+    p-6
+    rounded-lg
+    shadow-lg
+    overflow-auto
+    flex
+    flex-col
+  ;
+}
+
+.modal__header {
+  @apply
+    w-full
+    flex
+    justify-between
+    items-center
+    border-b
+    pb-3
+    mb-4
+  ;
+}
+
+.modal__title {
+  @apply
+    text-2xl
+    font-semibold
+  ;
+}
+
+.modal__close {
+  @apply
+    text-gray-500
+    hover:text-gray-800
+    text-2xl
+  ;
+}
+
+.modal__content {
+  @apply
+    flex
+    flex-col
+    md:flex-row
+    flex-1
+  ;
+}
+
+.modal__content--main {
+  @apply
+    flex-1 p-4
+  ;
+}
+
+.modal__content--right {
+  @apply
+     p-4 flex flex-col space-y-4
+  ;
+}
+
+.modal__content--right__button {
+  @apply
+    flex
+    self-center
+    items-center
+    justify-center
+    w-8
+    h-6
+    rounded-md
+    bg-emerald-800
+    text-gray-300
+    cursor-pointer
+    shadow-md
+    hover:text-gray-100
+    hover:bg-emerald-700
+    transition
+    duration-200
+  ;
+}

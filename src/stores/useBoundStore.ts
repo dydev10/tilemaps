@@ -16,6 +16,10 @@ export interface BoundStore extends EditorSlice, PreviewSlice {
 
   tileBrush: number | null;
   setTileBrush: (brushNum: number | null) => void;
+
+  isExportOpen: boolean;
+  openExport: () => void;
+  closeExport: () => void;
 };
 
 const useBoundStore = create<BoundStore>((set, get, ...ar) => ({
@@ -42,6 +46,18 @@ const useBoundStore = create<BoundStore>((set, get, ...ar) => ({
   setTileBrush: (brushNum: number | null) => {
     set({
       tileBrush: brushNum,
+    });
+  },
+
+  isExportOpen: false,
+  openExport: () => {
+    set({
+      isExportOpen: true,
+    });
+  },
+  closeExport: () => {
+    set({
+      isExportOpen: false,
     });
   },
 }));

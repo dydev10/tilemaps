@@ -7,6 +7,7 @@ import EditorCanvas from "./EditorCanvas";
 import PreviewCanvas from "./PreviewCanvas";
 import PreviewForm from "./PreviewForm";
 import useBoundStore from "../stores/useBoundStore";
+import ExportCanvas from "./ExportCanvas";
 
 
 const EditorLayout: React.FC = () => {
@@ -26,6 +27,7 @@ const EditorLayout: React.FC = () => {
         </div>
       </div>
 
+      <ExportCanvas />
       <img
         ref={imageRef}
         alt="Hidden tilemap source img"
