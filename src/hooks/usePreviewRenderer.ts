@@ -77,7 +77,7 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
     for (let row = 0; row < map.rows; row++) {
       for (let col = 0; col < map.cols; col++) {
         // hover tile
-        if (mouseCol === col && mouseRow === row) {
+        if (input.focused && mouseCol === col && mouseRow === row) {
           hoveredTile = { col, row };
         }
 
@@ -105,6 +105,20 @@ function usePreviewRenderer(ctx: CanvasRenderingContext2D | null, previewWidth: 
         map.tileSize,
         '#5ee9b5',
         4
+      );
+    }
+
+    // draw target Tile
+    if (map.targetTile) {      
+      drawOutline(
+        ctx,
+        map.targetTile.col * map.tileSize,
+        map.targetTile.row * map.tileSize,
+        map.tileSize,
+        map.tileSize,
+        'blue',
+        4,
+        0.5
       );
     }
   }, [ctx, previewHeight, previewWidth, map, input, showGrid]);

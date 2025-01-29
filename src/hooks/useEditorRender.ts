@@ -102,7 +102,7 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
         const y = viewport.getViewportY(row);
         
         // hover tile
-        if (mouseCol === col && mouseRow === row) {
+        if (input.focused && mouseCol === col && mouseRow === row) {
           hoveredTile = { col, row };
         }
 
@@ -153,9 +153,11 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
         2
       );
     }
-
-    // Debug mouse potion on canvas
-    drawCircle(ctx, mouse.x, mouse.y, 5, "red")
+    
+    if (input.focused) {
+      // Debug mouse potion on canvas
+      drawCircle(ctx, mouse.x, mouse.y, 5, "red")
+    }
 
   }, [ctx, input, map, viewport, showGrid]);
   
