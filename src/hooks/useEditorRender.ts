@@ -73,8 +73,9 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
     // typescript enum weirdness, do NOT use MouseButtons.MOUSE_L (=0, we need 'MOUSE_L')
     if (keys[0] === MouseButtons[MouseButtons.MOUSE_L]) {
       const { mouseCol, mouseRow } = getOffsetMouse(mouse, map, viewport);
+      map.setTargetTile(mouseCol, mouseRow);
+
       const curTile = map.getTile(mouseCol, mouseRow, 0);
-      
       if (tileBrush && curTile !== tileBrush) {
         map.setLayerAtTile(tileBrush, mouseCol, mouseRow);
       }

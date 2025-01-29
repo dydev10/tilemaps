@@ -16,8 +16,9 @@ export default class TileMap {
   // multi layer tileMap data model
   layers: number[][];
 
-  // save helper props
+  // state helper props
   trimTile: GridPoint;
+  targetTile: GridPoint | null;
 
   //preview stuff
   previewWidth?: number;
@@ -35,6 +36,7 @@ export default class TileMap {
     
     this.layers = layers;
     this.trimTile = { col: 0, row: 0 };
+    this.targetTile = null;
 
     // preview things
     if (previewWidth) {
@@ -136,6 +138,10 @@ export default class TileMap {
   getTile = (col: number, row: number, layer: number = 0): number => {    
     return this.layers[layer][row * this._cols + col]
   }
+
+  setTargetTile = (col: number, row: number) => {
+    this.targetTile = { col, row };
+  };
 
   setLayerAtTile = (layerTile: number, col: number, row: number, layer: number = 0) => {
     this.layers[layer][this.getTileIndex(col, row)] = layerTile;
