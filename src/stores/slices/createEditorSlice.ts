@@ -59,6 +59,10 @@ const createEditorSlice: StateCreator<BoundStore, [], [], EditorSlice> = (set, g
     },
 
     setEditorResolution: (resolution: number) => {
+      // check if tileSize allows this resolutions
+      const { map } = get().editor;
+      if (map && map?.imageTile > resolution) return;
+
       set({
         editor: {
           ...get().editor,
@@ -70,16 +74,17 @@ const createEditorSlice: StateCreator<BoundStore, [], [], EditorSlice> = (set, g
     // no subscription triggered, frame updates read/write
     updateEditor: (imageConfig: { tileSize: number, chain?: boolean }) => {
       const { tileSize, chain } = imageConfig;
-      const map = get().editor.map;
-      const previewMap = get().preview.map;
-      if (!map) return;
-  
-      map.setEditorTileSize(tileSize);
-      get().editor.setEditorSize(tileSize);
+      const { editor, preview}= get();
+      
+      // check if resolution allows this tileSize
+      if (editor.map && editor.resolution >= tileSize) {
+        editor.map.setEditorTileSize(tileSize);
+        editor.setEditorSize(tileSize);
+      }
 
       // update the preview which can not control its cols
-      if(chain && previewMap) {
-        get().preview.updatePreview({ imageTile: map.imageTile })
+      if(chain && editor.map) {
+        preview.updatePreview({ imageTile: editor.map.imageTile })
       }
     },
     updateEditorFocus: (focus: boolean) => {

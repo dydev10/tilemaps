@@ -74,7 +74,8 @@ const createPreviewSlice: StateCreator<BoundStore, [], [], PreviewSlice> = (set,
         map.setPreviewImageTile(imageTile);
         get().preview.setPreviewCols(map.cols);
       }
-      
+
+      // TODO: check if editor resolution x tileSize will allow this number of cols
       if (tileCols) {
         map.setPreviewTileCols(tileCols);
         get().preview.setPreviewCols(tileCols);

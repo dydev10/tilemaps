@@ -11,7 +11,6 @@ const PreviewForm: React.FC = () => {
   const setPreviewImage = useBoundStore(state => state.setPreviewImage);
   const openExport = useBoundStore(state => state.openExport);
   const tileSize = useBoundStore(state => state.editor.size);
-  const setTileSize = useBoundStore(state => state.editor.setEditorSize);
   const tileCols = useBoundStore(state => state.preview.cols);
   const setTileCols = useBoundStore(state => state.preview.setPreviewCols);
   // ????
@@ -46,23 +45,18 @@ const PreviewForm: React.FC = () => {
     openExport();
   };
 
-  // edi
-  const handleApplySize = (tileSize: number) => {
+  // editor
+  const handleChangeSize = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    const tileSize = TileMap.getSizeByPower(parseInt(value, 10));
+
     updateEditor({
       tileSize,
       chain: true,
     });
   }
 
-  const handleChangeSize = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    const size = TileMap.getSizeByPower(parseInt(value, 10));
-
-    setTileSize(size);
-    handleApplySize(size);
-  }
-
-  // pre
+  // preview
   const handleApplyCols = (tileCols: number) => {
     updatePreview({
       tileCols,
