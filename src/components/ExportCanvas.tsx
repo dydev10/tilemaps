@@ -44,7 +44,7 @@ const ExportCanvas: React.FC = () => {
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
           >
             <div className="modal__header">
-              <h2 className="modal__title">Fullscreen Modal</h2>
+              <h2 className="modal__title">Export TileMap</h2>
               <button
                 className="modal__close"
                 onClick={() => closeExport()}
@@ -59,10 +59,6 @@ const ExportCanvas: React.FC = () => {
                   className="export-canvas"
                   ref={canvasRef}
                   style={{
-                    border: '1px solid black',
-                    background: '#ffaaaa',
-                    maxWidth: '85%',
-                    maxHeight: '85%',
                     imageRendering: 'pixelated',
                   }}
                 />

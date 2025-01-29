@@ -39,16 +39,15 @@ function useExportRender(ctx: CanvasRenderingContext2D | null) {
     if (!ctx) return;
     // setup canvas config
     ctx.imageSmoothingEnabled = false;
+    clearCanvas(ctx, 'transparent');
 
     if(map) {
       ctx.canvas.width = tileSize * map.cols;
       ctx.canvas.height = tileSize * map.rows;
+      
+      drawLayer(0);
+      // drawLayer(1);
     }    
-
-    clearCanvas(ctx);
-
-    drawLayer(0);
-    // drawLayer(1);
   }, [ctx, drawLayer, tileSize, map]);
 
   useEffect(() => {

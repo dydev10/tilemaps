@@ -78,6 +78,17 @@ body {
   ;
 }
 
+.export-canvas {
+  @apply
+    border
+    rounded-lg
+    bg-white
+    shadow-xl
+    max-w-[85%]
+    max-h-[85%]
+  ;
+}
+
 .editor-canvas {
   @apply
     border
@@ -215,7 +226,7 @@ body {
 
 .modal__dialog {
   @apply
-    bg-white
+    bg-emerald-100
     w-full
     h-full
     md:w-4/5
