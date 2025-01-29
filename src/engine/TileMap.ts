@@ -129,6 +129,10 @@ export default class TileMap {
   static getTileI = () => (col: number, row: number, totalCols: number): number => row * totalCols + col;
   static getTileN = (col: number, row: number, totalCols: number): number => TileMap.getTileN(col, row, totalCols) + 1;
 
+  static getSizeByPower = (pow: number) => {
+    return 2**pow;
+  }
+
   /**
    * methods
    */

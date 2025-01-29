@@ -3,6 +3,7 @@ import { FaDownload, FaFileImage, FaPalette } from "react-icons/fa6";
 import useBoundStore from "../stores/useBoundStore";
 import { getBaseLog, uptoFixed } from "../helpers/maths";
 import colorTiles from '../assets/colortiles.png'
+import TileMap from "../engine/TileMap";
 
 const PreviewForm: React.FC = () => {
   // controls ui
@@ -45,11 +46,6 @@ const PreviewForm: React.FC = () => {
     openExport();
   };
 
-
-  const getSizeByPower = (pow: number) => {
-    return 2**pow;
-  }
-
   // edi
   const handleApplySize = (tileSize: number) => {
     updateEditor({
@@ -60,9 +56,9 @@ const PreviewForm: React.FC = () => {
 
   const handleChangeSize = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const size = getSizeByPower(parseInt(value, 10));
+    const size = TileMap.getSizeByPower(parseInt(value, 10));
 
-    setTileSize(size)
+    setTileSize(size);
     handleApplySize(size);
   }
 
