@@ -91,12 +91,14 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
     let hoveredTile = null;
     const { mouse } = input;
     const { startTile, endTile } = viewport;
+    const endCol = Math.min(endTile.x, map.layers[layer].length / map.rows);
+    const endRow = Math.min(endTile.y, map.layers[layer].length / map.cols);
 
     const { mouseCol, mouseRow } = getOffsetMouse(mouse, map, viewport);
 
     // tile grid
-    for (let row = startTile.y; row <= endTile.y; row++) {
-      for (let col = startTile.x; col <= endTile.x; col++) {
+    for (let row = startTile.y; row <= endRow; row++) {
+      for (let col = startTile.x; col <= endCol; col++) {
         const tile = map.getTile(col, row, layer);
         const x = viewport.getViewportX(col);
         const y = viewport.getViewportY(row);
