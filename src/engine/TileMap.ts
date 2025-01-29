@@ -218,6 +218,14 @@ export default class TileMap {
     this._imageRows = Math.floor(this.image.height / this._imageTile);
   }
 
+  setEditorResolution = (resolution: number) => {
+    this.layers = TileMap.generate(resolution, resolution, 1, null, this.getTile);
+    
+    // modify size after copying layers to new size
+    this._cols = resolution;
+    this._rows = resolution;
+  }
+
   /**
    * image
    */

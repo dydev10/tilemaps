@@ -63,6 +63,8 @@ const createEditorSlice: StateCreator<BoundStore, [], [], EditorSlice> = (set, g
       const { map } = get().editor;
       if (map && map?.imageTile > resolution) return;
 
+      map?.setEditorResolution(resolution);
+
       set({
         editor: {
           ...get().editor,
