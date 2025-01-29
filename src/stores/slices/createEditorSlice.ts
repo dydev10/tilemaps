@@ -5,18 +5,20 @@ import Viewport from "../../engine/Viewport";
 import { Point } from "../../types";
 import TileMap from "../../engine/TileMap";
 import { BoundStore } from "../useBoundStore";
-import { DEFAULT_TILE_SIZE } from "../../helpers/constants";
+import { DEFAULT_CANVAS_SIZE, DEFAULT_TILE_SIZE } from "../../helpers/constants";
 import sampleLayers from "../../sampleLayers";
 
 
 export interface EditorSlice {
   editor: {
+    resolution: number;
     size: number,
     input: Input | null,
     map: TileMap | null,
     viewport: Viewport | null,
     camera: Camera | null,
     setupEditor: (editorWidth: number, editorHeight: number) => void,
+    setEditorResolution: (resolution: number) => void;
     updateEditor: (imageConfig: { tileSize: number, chain?: boolean }) => void,
     updateEditorFocus:  (focus: boolean) => void;
     updateEditorInput: (data: { mouse?: Point }) => void,
@@ -24,11 +26,13 @@ export interface EditorSlice {
     updateEditorScroll: (deltaY: number, shiftKey: boolean) => void,
     setEditorSize: (size: number) => void,
     destroyEditor: () => void,
+
   },
 }
 
 const createEditorSlice: StateCreator<BoundStore, [], [], EditorSlice> = (set, get) => ({
   editor: {
+    resolution: DEFAULT_CANVAS_SIZE,
     input: null,
     map: null,
     size: DEFAULT_TILE_SIZE,
@@ -50,6 +54,15 @@ const createEditorSlice: StateCreator<BoundStore, [], [], EditorSlice> = (set, g
           viewport,
           camera,
           size: map.tileSize,
+        }
+      });
+    },
+
+    setEditorResolution: (resolution: number) => {
+      set({
+        editor: {
+          ...get().editor,
+          resolution,
         }
       });
     },
