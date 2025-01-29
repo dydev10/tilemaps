@@ -13,6 +13,7 @@ export interface BoundStore extends EditorSlice, PreviewSlice {
   imageUrl: string | null;
   loadingPreviewImage: () => void;
   setPreviewImage: (url: string) => void;
+  loadedPreviewImage: () => void;
 
   tileBrush: number | null;
   setTileBrush: (brushNum: number | null) => void;
@@ -37,6 +38,10 @@ const useBoundStore = create<BoundStore>((set, get, ...ar) => ({
   setPreviewImage: (url: string) => {    
     set({
       imageUrl: url,
+    });
+  },
+  loadedPreviewImage: () => {
+    set({
       imageStatus: LoadingState.READY,
     });
   },

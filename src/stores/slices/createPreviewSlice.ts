@@ -46,14 +46,20 @@ const createPreviewSlice: StateCreator<BoundStore, [], [], PreviewSlice> = (set,
     },
 
     updatePreviewImage: () => {
-      get().preview.map?.syncPreviewImage();
+      const { preview, editor } = get();
+      
+      preview.map?.syncPreviewImage();
       set({
         imageStatus: LoadingState.IDLE,
       });
-      get().preview.updatePreview({
-        tileCols: get().preview.map?.cols,
-        chain: true,
-      });
+
+      // update editor also
+      if (editor) {        
+        editor.updateEditor({
+          tileSize: preview.map?.imageTile ?? 0,
+          chain: true,
+        });
+      }
     },
 
     // no subscription triggered, frame updates read/write

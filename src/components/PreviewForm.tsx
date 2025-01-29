@@ -36,7 +36,9 @@ const PreviewForm: React.FC = () => {
   };
 
   const handleColorPalette = () => {
-    setPreviewImage(colorTiles)
+    // call loading action to reset status and trigger re-renders
+    loadingPreviewImage();
+    setPreviewImage(colorTiles);
   };
   
   const handleDownload = () => {

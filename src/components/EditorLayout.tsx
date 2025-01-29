@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 // import layerImage from '../assets/tilemap1layer.png'
 // import worldImage from '../assets/worldtileset.png'
 // import summerPlain from '../assets/summerPlain.png'
@@ -13,6 +13,23 @@ import ExportCanvas from "./ExportCanvas";
 const EditorLayout: React.FC = () => {
   const imageRef = useRef<HTMLImageElement>(null);
   const imageUrl = useBoundStore(state => state.imageUrl);
+  const loadedPreviewImage = useBoundStore(state => state.loadedPreviewImage);
+
+  useEffect(() => {
+    const image = imageRef.current;
+    if (imageUrl && image) {
+      image.onload = () => {        
+        loadedPreviewImage();
+      }
+    }
+
+    return () => {      
+      if(image) {
+        image.onload = null;
+      }
+    }
+  }, [imageUrl, loadedPreviewImage]);
+
 
   return (
     <div className="editor-layout">

@@ -130,22 +130,6 @@ export default class TileMap {
   /**
    * methods
    */
-
-  // called when auto generating grid mapping for image
-  generateLayers = (): number[][] => {
-    const layers: number[][] = [];
-
-    const layer0: number[] = [];
-    for (let row = 0; row < this._rows; row++) {
-      for (let col = 0; col < this._cols; col++) {
-        layer0.push(this.getTileNumber(col, row));
-      }
-    }
-    layers.push(layer0)
-  
-    return layers;
-  }
-
   getTileIndex = (col: number, row: number): number => row * this._cols + col;
   getTileNumber = (col: number, row: number): number => this.getTileIndex(col, row) + 1;
 
