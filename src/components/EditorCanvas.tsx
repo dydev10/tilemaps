@@ -13,6 +13,8 @@ const EditorCanvas: React.FC = () => {
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
 
   // ui 
+  const activeLayer = useBoundStore(state => state.activeLayer);
+  const nextActiveLayer = useBoundStore(state => state.nextActiveLayer);
   const resolution = useBoundStore(state => state.editor.resolution);
   const setResolution = useBoundStore(state => state.editor.setEditorResolution);
   const updateInput = useBoundStore(state => state.editor.updateEditorInput);
@@ -69,8 +71,14 @@ const EditorCanvas: React.FC = () => {
     setResolution(size);
   };
 
+  const handleChangeLayer = () => {
+    nextActiveLayer();
+  };
+
   return (
     <div className="editor-canvas">
+      <button className="editor-canvas__layers-button" onClick={handleChangeLayer}>{activeLayer}</button>
+
        <datalist id="size-markers">
         <option key={`size-opt-${3}`} value={3} />
         <option key={`size-opt-${4}`} value={4} />

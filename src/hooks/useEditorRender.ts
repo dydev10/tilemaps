@@ -11,6 +11,7 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
   const prevTimeRef = useRef<number>(0);
   
   const tileBrush = useBoundStore(state => state.tileBrush); 
+  const activeLayer = useBoundStore(state => state.activeLayer); 
   const input = useBoundStore(state => state.editor.input);
   const map = useBoundStore(state => state.editor.map);
   const viewport = useBoundStore(state => state.editor.viewport);
@@ -75,14 +76,14 @@ function useEditorRender(ctx: CanvasRenderingContext2D | null, previewWidth: num
       const { mouseCol, mouseRow } = getOffsetMouse(mouse, map, viewport);
       map.setTargetTile(mouseCol, mouseRow);
 
-      const curTile = map.getTile(mouseCol, mouseRow, 0);
+      const curTile = map.getTile(mouseCol, mouseRow, activeLayer);
       if (tileBrush && curTile !== tileBrush) {
-        map.setLayerAtTile(tileBrush, mouseCol, mouseRow);
+        map.setLayerAtTile(tileBrush, mouseCol, mouseRow, activeLayer);
       }
     }
 
     moveCamera(deltaTime, speedX, speedY);
-  }, [ctx, input, map, viewport, tileBrush, moveCamera]);
+  }, [ctx, activeLayer, input, map, viewport, tileBrush, moveCamera]);
 
   const drawLayer = useCallback((layer: number) => {
     if (!ctx || !map || !viewport) return;

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import createEditorSlice, { EditorSlice } from "./slices/createEditorSlice";
 import createPreviewSlice, { PreviewSlice } from "./slices/createPreviewSlice";
+import isEmpty from "../helpers/isEmpty";
 
 export enum LoadingState {
   IDLE = 'idle',
@@ -17,6 +18,10 @@ export interface BoundStore extends EditorSlice, PreviewSlice {
 
   tileBrush: number | null;
   setTileBrush: (brushNum: number | null) => void;
+
+  activeLayer: number;
+  setActiveLayer: (layer: number) => void;
+  nextActiveLayer: () => void;
 
   isExportOpen: boolean;
   openExport: () => void;
@@ -52,6 +57,22 @@ const useBoundStore = create<BoundStore>((set, get, ...ar) => ({
     set({
       tileBrush: brushNum,
     });
+  },
+
+  activeLayer: 0,
+  setActiveLayer(layer: number) {
+    set({
+      activeLayer: layer,
+    });
+  },
+  nextActiveLayer: () => {
+    const { editor, activeLayer, setActiveLayer } = get();
+  
+    if (editor.map && !isEmpty(activeLayer)) {
+      const layers = editor.map.layers.length;
+      const nextLayer = (activeLayer + 1) % layers;
+      setActiveLayer(nextLayer);
+    }
   },
 
   // export 
